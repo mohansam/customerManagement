@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const createNewCustomerSchema = Joi.object({
+const customerSchema = Joi.object({
     customerName: Joi.string().required().messages({
         'any.required': 'Customer name is required.',
     }),
@@ -18,4 +18,13 @@ const createNewCustomerSchema = Joi.object({
         }),
 });
 
-module.exports = { createNewCustomerSchema };
+const customerIdValidationSchema = Joi.object({
+    customerId: Joi.number().integer().positive().required().messages({
+        'number.base': 'Invalid ID, must be a number',
+        'number.integer': 'Invalid ID, must be an integer',
+        'number.positive': 'Invalid ID, must be a positive number',
+        'any.required': 'ID is required',
+    }),
+});
+
+module.exports = { customerSchema, customerIdValidationSchema };
