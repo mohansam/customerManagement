@@ -6,11 +6,8 @@ const { customerSchema, customerIdValidationSchema } = require('../schema/custom
 
 const createNewCustomer = async (context) => {
     try {
-        const newCustomer = await Customer.create({
-            customerName: context.req.validatedData.customerName,
-            customerAddress: context.req.validatedData.customerAddress,
-            customerMobileNum: context.req.validatedData.customerMobileNum,
-        });
+        const { customerName, customerAddress, customerMobileNum } = context.req.validatedData;
+        const newCustomer = await Customer.create({ customerName, customerAddress, customerMobileNum });
         return context.json(newCustomer.toJSON(), 200);
     } catch (err) {
         console.log(err);
@@ -20,19 +17,10 @@ const createNewCustomer = async (context) => {
 
 const updateCustomer = async (context) => {
     try {
-        const { id } = context.req.params;
-        const updatedCustomer = await Customer.update(
-            {
-                customerName: context.req.validatedData.customerName,
-                customerAddress: context.req.validatedData.customerAddress,
-                customerMobileNum: context.req.validatedData.customerMobileNum,
-            },
-            {
-                where: { customerId: id },
-            }
-        );
+        const { customerId, ...customerObj } = context.req.validatedData;
+        const updatedCustomer = await Customer.update(customerObj, { where: { customerId } });
         if (updatedCustomer[0] === 0) throw new HTTPException(404, { message: 'Customer not found' });
-        return context.json({ message: 'Customer updated successfully' }, 200);
+        return context.json(customerObj, 200);
     } catch (err) {
         console.log(err);
         throw new HTTPException(500, { message: 'Internal server error' });
