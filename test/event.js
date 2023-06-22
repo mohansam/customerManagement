@@ -1,7 +1,7 @@
 const event = {
     version: '2.0',
     routeKey: '$default',
-    rawPath: '/api/v1/customer/updateCustomer/18',
+    rawPath: '/api/v1/service/getServiceByCustomerId/1',
     rawQueryString: 'customerName=John%20Doe',
     headers: {
         'sec-fetch-mode': 'navigate',
@@ -32,7 +32,7 @@ const event = {
         domainName: 'c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws',
         domainPrefix: 'c5vivyjwsori5w5eenemb7yiuy0jzzek',
         http: {
-            method: 'PUT',
+            method: 'GET',
             path: '/api/v1/customer/createNewCustomer',
             protocol: 'HTTP/1.1',
             sourceIp: '152.58.214.233',
@@ -45,7 +45,11 @@ const event = {
         time: '20/Jun/2023:12:40:47 +0000',
         timeEpoch: 1687264847983,
     },
-    body: '{"customerName": "John Doe", "customerAddress": "123 Main Street", "customerMobileNum": "9715409370"}',
+    // body: JSON.stringify({
+    //     customerId: 1,
+    //     serviceDate: '2023-06-21',
+    //     isServiceCompleted: true,
+    // }),
     isBase64Encoded: false,
 };
 
