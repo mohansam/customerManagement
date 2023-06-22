@@ -12,7 +12,7 @@ const event = {
         'x-forwarded-port': '443',
         'x-forwarded-for': '152.58.214.233',
         'sec-fetch-user': '?1',
-        accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        accept: 'application/json',
         'x-amzn-tls-cipher-suite': 'ECDHE-RSA-AES128-GCM-SHA256',
         'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
         'sec-ch-ua-mobile': '?0',
@@ -32,7 +32,7 @@ const event = {
         domainName: 'c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws',
         domainPrefix: 'c5vivyjwsori5w5eenemb7yiuy0jzzek',
         http: {
-            method: 'GET',
+            method: 'POST',
             path: '/api/v1/customer/createNewCustomer',
             protocol: 'HTTP/1.1',
             sourceIp: '152.58.214.233',
@@ -45,6 +45,7 @@ const event = {
         time: '20/Jun/2023:12:40:47 +0000',
         timeEpoch: 1687264847983,
     },
+    body: '{"customerName": "John Doe", "customerAddress": "123 Main Street", "customerMobileNum": "6789"}',
     isBase64Encoded: false,
 };
 

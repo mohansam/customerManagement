@@ -9,7 +9,6 @@ const getContent = (path) => {
         lambdaCache[path] = { data };
         return data;
     } catch (err) {
-        console.error(err);
         lambdaCache[path] = { data: '' };
         return '';
     }
