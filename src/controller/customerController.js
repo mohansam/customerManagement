@@ -22,6 +22,7 @@ const updateCustomer = async (context) => {
         if (updatedCustomer[0] === 0) throw new HTTPException(404, { message: 'Customer not found' });
         return context.json(customerObj, 200);
     } catch (err) {
+        if (err.status === 404) throw err;
         console.log(err);
         throw new HTTPException(500, { message: 'Internal server error' });
     }

@@ -1,7 +1,7 @@
 const event = {
     version: '2.0',
     routeKey: '$default',
-    rawPath: '/api/v1/customer/updateCustomer/18',
+    rawPath: '/api/v1/customer/updateCustomer/181',
     rawQueryString: '',
     headers: {
         'sec-fetch-mode': 'navigate',
