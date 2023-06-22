@@ -1,8 +1,8 @@
 const event = {
     version: '2.0',
     routeKey: '$default',
-    rawPath: '/api/v1/customer/updateCustomer/181',
-    rawQueryString: '',
+    rawPath: '/api/v1/customer/updateCustomer/18',
+    rawQueryString: 'customerName=John%20Doe',
     headers: {
         'sec-fetch-mode': 'navigate',
         'x-amzn-tls-version': 'TLSv1.2',

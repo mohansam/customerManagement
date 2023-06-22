@@ -1,5 +1,9 @@
-// eslint-disable-next-line import/no-unresolved
-const { HTTPException } = require('hono/http-exception');
+const { sequelize } = require('../Db/dbClient');
+
+const sanitizeValue = (value) => {
+    if (typeof value === 'string') return sequelize.escape(value).slice(1, -1);
+    return value;
+};
 
 const getInputData = async (context, source) => {
     switch (source) {
@@ -7,8 +11,10 @@ const getInputData = async (context, source) => {
             return context.req.param();
         case 'body':
             return context.req.json();
+        case 'query':
+            return context.req.query();
         default:
-            throw new HTTPException(500, { message: 'internal server error' });
+            return context.json({ message: 'Internal server error' }, 500);
     }
 };
 
@@ -17,8 +23,12 @@ const validateInput =
     async (context, next) => {
         const inputData = await getInputData(context, source);
         const { error, value } = schema.validate(inputData);
-        if (error) throw new HTTPException(400, { message: error.details[0].message });
-        context.req.validatedData = { ...context.req.validatedData, ...value };
+        if (error) return context.json({ message: error.details[0].message }, 400);
+        const sanitizedValue = {};
+        Object.keys(value).forEach((key) => {
+            sanitizedValue[key] = sanitizeValue(value[key]);
+        });
+        context.req.validatedData = { ...context.req.validatedData, ...sanitizedValue };
         return next();
     };
 

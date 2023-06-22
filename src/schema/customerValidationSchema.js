@@ -1,8 +1,10 @@
 const Joi = require('joi');
 
 const customerSchema = Joi.object({
-    customerName: Joi.string().required().messages({
-        'any.required': 'Customer name is required.',
+    customerName: Joi.string().required().max(50).messages({
+        'string.base': 'Customer name must be a string',
+        'any.required': 'Customer name is required',
+        'string.max': 'Customer name should not exceed {#limit} characters',
     }),
     customerAddress: Joi.string().max(100).required().messages({
         'string.base': 'Customer address must be a string.',
@@ -18,6 +20,14 @@ const customerSchema = Joi.object({
         }),
 });
 
+const customerNameSchema = Joi.object({
+    customerName: Joi.string().required().max(50).messages({
+        'string.base': 'Customer name must be a string',
+        'any.required': 'Customer name is required',
+        'string.max': 'Customer name should not exceed {#limit} characters',
+    }),
+});
+
 const customerIdValidationSchema = Joi.object({
     customerId: Joi.number().integer().positive().required().messages({
         'number.base': 'Invalid ID, must be a number',
@@ -27,4 +37,4 @@ const customerIdValidationSchema = Joi.object({
     }),
 });
 
-module.exports = { customerSchema, customerIdValidationSchema };
+module.exports = { customerSchema, customerIdValidationSchema, customerNameSchema };
