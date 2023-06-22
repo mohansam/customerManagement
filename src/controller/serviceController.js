@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Service } = require('../model/serviceModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
@@ -59,6 +60,26 @@ const getServiceByCustomerId = async (context) => {
         return context.json({ message: 'Internal server error' }, 500);
     }
 };
+
+const getPendingServices = async (context) => {
+    try {
+        const currentDate = new Date();
+        // Find all services where serviceDate is less than the current date and isServiceCompleted is false
+        const pendingServices = await Service.findAll({
+            where: {
+                serviceDate: { [Op.lt]: currentDate },
+                isServiceCompleted: false,
+            },
+        });
+        if (pendingServices.length === 0) return context.json({ message: `There is no pending services` }, 404);
+        const serviceData = pendingServices.map((pendingService) => pendingService.toJSON());
+        return context.json(serviceData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 module.exports = {
     createNewService: [validateInput(serviceSchema, 'body'), createNewService],
     updateService: [
@@ -68,4 +89,5 @@ module.exports = {
     ],
     getServiceByServiceId: [validateInput(serviceIdValidationSchema, 'params'), getServiceByServiceId],
     getServiceByCustomerId: [validateInput(customerIdValidationSchema, 'params'), getServiceByCustomerId],
+    getPendingServices,
 };

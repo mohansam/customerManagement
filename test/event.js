@@ -1,7 +1,7 @@
 const event = {
     version: '2.0',
     routeKey: '$default',
-    rawPath: '/api/v1/service/getServiceByCustomerId/1',
+    rawPath: '/api/v1/service/getPendingServices',
     rawQueryString: 'customerName=John%20Doe',
     headers: {
         'sec-fetch-mode': 'navigate',
