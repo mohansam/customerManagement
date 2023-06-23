@@ -9,7 +9,7 @@ const { connectToDb } = require('./Db/dbConnection');
 
 const app = new Hono();
 
-app.use('*', serveStatic({ root: 'public' }));
+app.use('*', serveStatic({ root: 'frontendBuild' }));
 
 app.get('/', async (context) => context.json({ statusMessage: 'hello from customer management' }, 200));
 
