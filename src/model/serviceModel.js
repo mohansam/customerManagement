@@ -11,11 +11,20 @@ const Service = sequelize.define('service', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    productName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     serviceDate: {
         type: DataTypes.DATE,
         allowNull: false,
     },
     isServiceCompleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
+    isFreeService: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,

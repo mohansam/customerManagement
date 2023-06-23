@@ -7,10 +7,16 @@ const { customerIdValidationSchema } = require('../schema/customerValidationSche
 
 const createNewService = async (context) => {
     try {
-        const { customerId, serviceDate, isServiceCompleted } = context.req.validatedData;
+        const { customerId, serviceDate, isServiceCompleted, productName, isFreeService } = context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
-        const newService = await Service.create({ customerId, serviceDate, isServiceCompleted });
+        const newService = await Service.create({
+            customerId,
+            serviceDate,
+            isServiceCompleted,
+            productName,
+            isFreeService,
+        });
         return context.json(newService.toJSON(), 200);
     } catch (err) {
         console.log(err);
@@ -20,11 +26,12 @@ const createNewService = async (context) => {
 
 const updateService = async (context) => {
     try {
-        const { serviceId, customerId, serviceDate, isServiceCompleted } = context.req.validatedData;
+        const { serviceId, customerId, serviceDate, isServiceCompleted, productName, isFreeService } =
+            context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
         const [updatedService] = await Service.update(
-            { customerId, serviceDate, isServiceCompleted },
+            { customerId, serviceDate, isServiceCompleted, productName, isFreeService },
             { where: { serviceId } }
         );
         if (updatedService === 0) return context.json({ message: 'Service not found' }, 404);

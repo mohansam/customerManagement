@@ -105,6 +105,8 @@ paths:
                             customerId: 1
                             serviceDate: '2023-06-21'
                             isServiceCompleted: false
+                            productName: Example Product
+                            isFreeService: true
             responses:
                 '200':
                     description: OK
@@ -117,6 +119,8 @@ paths:
                                 customerId: 1
                                 serviceDate: '2023-06-21'
                                 isServiceCompleted: false
+                                productName: Example Product
+                                isFreeService: true
     /api/v1/service/updateService/{serviceId}:
         put:
             summary: Update an existing service
@@ -138,6 +142,8 @@ paths:
                             customerId: 1
                             serviceDate: '2023-06-21'
                             isServiceCompleted: true
+                            productName: Example Product
+                            isFreeService: true
             responses:
                 '200':
                     description: OK
@@ -150,6 +156,8 @@ paths:
                                 customerId: 1
                                 serviceDate: '2023-06-21'
                                 isServiceCompleted: true
+                                productName: Example Product
+                                isFreeService: true
     /api/v1/service/getServiceByServiceId/{serviceId}:
         get:
             summary: Get a service by ID
@@ -173,6 +181,8 @@ paths:
                                 customerId: 1
                                 serviceDate: '2023-06-21'
                                 isServiceCompleted: true
+                                productName: Example Product
+                                isFreeService: true
     /api/v1/service/getServiceByCustomerId/{customerId}:
         get:
             summary: Get services by customer ID
@@ -202,6 +212,8 @@ paths:
                                   customerId: 1
                                   serviceDate: '2023-06-22'
                                   isServiceCompleted: false
+                                  productName: Example Product
+                                  isFreeService: true
     /api/v1/service/getPendingServices:
         get:
             summary: Get pending services
@@ -220,10 +232,14 @@ paths:
                                   customerId: 1
                                   serviceDate: '2023-06-21'
                                   isServiceCompleted: false
+                                  productName: Example Product
+                                  isFreeService: true
                                 - serviceId: 2
                                   customerId: 2
                                   serviceDate: '2023-06-22'
                                   isServiceCompleted: false
+                                  productName: Example Product
+                                  isFreeService: true
 components:
     schemas:
         Customer:
@@ -265,6 +281,10 @@ components:
                     format: date
                 isServiceCompleted:
                     type: boolean
+                productName:
+                    type: string
+                isFreeService:
+                    type: boolean
         NewServiceInput:
             type: object
             properties:
@@ -275,6 +295,10 @@ components:
                     format: date
                 isServiceCompleted:
                     type: boolean
+                productName:
+                    type: string
+                isFreeService:
+                    type: boolean
         UpdateServiceInput:
             type: object
             properties:
@@ -284,4 +308,8 @@ components:
                     type: string
                     format: date
                 isServiceCompleted:
+                    type: boolean
+                productName:
+                    type: string
+                isFreeService:
                     type: boolean
