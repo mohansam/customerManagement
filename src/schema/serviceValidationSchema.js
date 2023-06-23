@@ -16,6 +16,15 @@ const serviceSchema = Joi.object({
         'boolean.base': 'Invalid value for isServiceCompleted, must be a boolean',
         'any.required': 'isServiceCompleted is required',
     }),
+    productName: Joi.string().max(100).required().messages({
+        'string.base': 'Invalid product name, must be a string',
+        'string.max': 'Product name must not exceed 1000 characters',
+        'any.required': 'Product name is required',
+    }),
+    isFreeService: Joi.boolean().required().messages({
+        'boolean.base': 'Invalid value for isFreeService, must be a boolean',
+        'any.required': 'isFreeService is required',
+    }),
 });
 
 const serviceIdValidationSchema = Joi.object({
