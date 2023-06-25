@@ -36,7 +36,6 @@ const CreateNewServiceComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { customerName, ...dataWithoutCustomerName } = serviceData;
 
     try {
       const response = await fetch("/api/v1/service/createNewService", {
@@ -44,7 +43,7 @@ const CreateNewServiceComponent = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataWithoutCustomerName),
+        body: JSON.stringify(serviceData),
       });
 
       if (response.ok) {

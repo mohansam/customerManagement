@@ -11,6 +11,10 @@ const Service = sequelize.define('service', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    customerName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     productName: {
         type: DataTypes.STRING,
         allowNull: true,

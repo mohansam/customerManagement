@@ -7,6 +7,11 @@ const serviceSchema = Joi.object({
         'number.positive': 'Invalid customer ID, must be a positive number',
         'any.required': 'Customer ID is required',
     }),
+    customerName: Joi.string().required().max(50).messages({
+        'string.base': 'Customer name must be a string',
+        'any.required': 'Customer name is required',
+        'string.max': 'Customer name should not exceed {#limit} characters',
+    }),
     serviceDate: Joi.date().iso().required().messages({
         'date.base': 'Invalid service date, must be a valid date',
         'date.format': 'Invalid service date format, must be in ISO 8601 format',

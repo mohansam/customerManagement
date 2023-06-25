@@ -7,11 +7,13 @@ const { customerIdValidationSchema } = require('../schema/customerValidationSche
 
 const createNewService = async (context) => {
     try {
-        const { customerId, serviceDate, isServiceCompleted, productName, isFreeService } = context.req.validatedData;
+        const { customerId, serviceDate, isServiceCompleted, productName, isFreeService, customerName } =
+            context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
         const newService = await Service.create({
             customerId,
+            customerName,
             serviceDate,
             isServiceCompleted,
             productName,
@@ -26,12 +28,12 @@ const createNewService = async (context) => {
 
 const updateService = async (context) => {
     try {
-        const { serviceId, customerId, serviceDate, isServiceCompleted, productName, isFreeService } =
+        const { serviceId, customerId, serviceDate, isServiceCompleted, productName, isFreeService, customerName } =
             context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
         const [updatedService] = await Service.update(
-            { customerId, serviceDate, isServiceCompleted, productName, isFreeService },
+            { customerId, serviceDate, isServiceCompleted, productName, isFreeService, customerName },
             { where: { serviceId } }
         );
         if (updatedService === 0) return context.json({ message: 'Service not found' }, 404);
@@ -58,8 +60,6 @@ const getServiceByCustomerId = async (context) => {
     try {
         const { customerId } = context.req.validatedData;
         const services = await Service.findAll({ where: { customerId } });
-        if (services.length === 0)
-            return context.json({ message: `There is no service scheduled for given customer` }, 404);
         const serviceData = services.map((service) => service.toJSON());
         return context.json(serviceData, 200);
     } catch (err) {
@@ -73,12 +73,8 @@ const getPendingServices = async (context) => {
         const currentDate = new Date();
         // Find all services where serviceDate is less than the current date and isServiceCompleted is false
         const pendingServices = await Service.findAll({
-            where: {
-                serviceDate: { [Op.lt]: currentDate },
-                isServiceCompleted: false,
-            },
+            where: { serviceDate: { [Op.lt]: currentDate }, isServiceCompleted: false },
         });
-        if (pendingServices.length === 0) return context.json({ message: `There is no pending services` }, 404);
         const serviceData = pendingServices.map((pendingService) => pendingService.toJSON());
         return context.json(serviceData, 200);
     } catch (err) {
