@@ -5,7 +5,6 @@ import "./CreateNewServiceComponent.css";
 const CreateNewServiceComponent = () => {
   const navigate = useNavigate();
   const [serviceData, setServiceData] = useState({
-    customerId: 0,
     serviceDate: "",
     isServiceCompleted: false,
     productName: "",
@@ -91,10 +90,8 @@ const CreateNewServiceComponent = () => {
   };
 
   const isFormValid = () => {
-    const { customerId, serviceDate, productName } = serviceData;
-    return (
-      customerId !== 0 && serviceDate.trim() !== "" && productName.trim() !== ""
-    );
+    const { serviceDate, productName } = serviceData;
+    return serviceDate.trim() !== "" && productName.trim() !== "";
   };
 
   return (
@@ -131,16 +128,6 @@ const CreateNewServiceComponent = () => {
               ))}
             </ul>
           )}
-        </div>
-        <div>
-          <label htmlFor="customerId">Customer ID:</label>
-          <input
-            type="text"
-            id="customerId"
-            name="customerId"
-            value={serviceData.customerId}
-            readOnly
-          />
         </div>
         <div>
           <label htmlFor="serviceDate">Service Date:</label>

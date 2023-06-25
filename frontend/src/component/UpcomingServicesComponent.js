@@ -54,6 +54,7 @@ const UpcomingServicesComponent = () => {
           <thead>
             <tr>
               <th>Service ID</th>
+              <th>Customer ID</th>
               <th>Customer Name</th>
               <th>Service Date</th>
               <th>Is Service Completed</th>
@@ -66,6 +67,7 @@ const UpcomingServicesComponent = () => {
             {upcomingServices.map((service) => (
               <tr key={service.serviceId}>
                 <td>{service.serviceId}</td>
+                <td>{service.customerId}</td>
                 <td>{service.customerName}</td>
                 <td>{service.serviceDate}</td>
                 <td>{service.isServiceCompleted ? "Yes" : "No"}</td>

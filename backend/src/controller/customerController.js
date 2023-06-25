@@ -48,6 +48,17 @@ const getCustomerByName = async (context) => {
     }
 };
 
+const getCustomerById = async (context) => {
+    try {
+        const { customerId } = context.req.validatedData;
+        const customer = await Customer.findByPk(customerId);
+        if (!customer) return context.json({ message: 'Customer not found' }, 404);
+        return context.json(customer.toJSON(), 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
 module.exports = {
     createNewCustomer: [validateInput(customerSchema, 'body'), createNewCustomer],
     updateCustomer: [
@@ -56,4 +67,5 @@ module.exports = {
         updateCustomer,
     ],
     getCustomerByName: [validateInput(customerNameSchema, 'query'), getCustomerByName],
+    getCustomerById: [validateInput(customerIdValidationSchema, 'params'), getCustomerById],
 };

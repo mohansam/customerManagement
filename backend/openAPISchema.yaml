@@ -91,6 +91,31 @@ paths:
                                   customerName: Jane Smith
                                   customerAddress: 456 Elm Street
                                   customerMobileNum: 9876543210
+    /api/v1/customer/getCustomerById/{customerId}:
+        get:
+            summary: Get customer by id
+            operationId: getCustomerByName
+            parameters:
+                - name: customerId
+                  in: path
+                  description: ID of the customer to update
+                  required: true
+                  schema:
+                      type: integer
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Customer'
+                            example:
+                                 customerId: 1
+                                  customerName: John Doe
+                                  customerAddress: 123 Main Street
+                                  customerMobileNum: 1234567890
     /api/v1/service/createNewService:
         post:
             summary: Create a new service
