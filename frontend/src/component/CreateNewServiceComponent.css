@@ -22,9 +22,11 @@
     margin-bottom: 10px;
 }
 
-.create-service-container input {
+.create-service-container input,
+.create-service-container select {
     width: 100%;
-    padding: 8px;
+    padding: 6px;
+    /* Adjust the input padding as needed */
     margin-bottom: 10px;
 }
 
@@ -34,4 +36,6 @@
     padding: 8px 16px;
     border: none;
     cursor: pointer;
+    margin-top: 10px;
+    /* Add margin-top to separate the buttons */
 }

@@ -1,18 +1,42 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./CreateNewServiceComponent.css";
 
 const CreateNewServiceComponent = () => {
+  const navigate = useNavigate();
   const [serviceData, setServiceData] = useState({
     customerId: 0,
     serviceDate: "",
     isServiceCompleted: false,
     productName: "",
     isFreeService: false,
+    customerName: "",
   });
+
+  const [customerList, setCustomerList] = useState([]);
+
+  useEffect(() => {
+    if (serviceData.customerName.trim() !== "") {
+      fetchCustomersByName();
+    }
+  }, [serviceData.customerName]);
+
+  const fetchCustomersByName = async () => {
+    try {
+      const response = await fetch(
+        `/api/v1/customer/getCustomerByName?customerName=${serviceData.customerName}`
+      );
+      const customers = await response.json();
+      setCustomerList(customers);
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { customerName, ...dataWithoutCustomerName } = serviceData;
 
     try {
       const response = await fetch("/api/v1/service/createNewService", {
@@ -20,12 +44,12 @@ const CreateNewServiceComponent = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(serviceData),
+        body: JSON.stringify(dataWithoutCustomerName),
       });
 
       if (response.ok) {
         // Handle success or redirect to another page
-        window.location.href = "/";
+        navigate("/pending-services");
       } else {
         console.error("Request failed");
         // Handle error
@@ -37,12 +61,17 @@ const CreateNewServiceComponent = () => {
   };
 
   const handleChange = (e) => {
-    setServiceData({ ...serviceData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setServiceData({ ...serviceData, [name]: newValue });
+  };
+
+  const handleCustomerSelect = (customerId) => {
+    setServiceData({ ...serviceData, customerId });
   };
 
   const isFormValid = () => {
     const { customerId, serviceDate, productName } = serviceData;
-
     return (
       customerId !== 0 && serviceDate.trim() !== "" && productName.trim() !== ""
     );
@@ -56,14 +85,30 @@ const CreateNewServiceComponent = () => {
       <h2>Create New Service</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="customerId">Customer ID:</label>
+          <label htmlFor="customerName">Customer Name:</label>
           <input
-            type="number"
+            type="text"
+            id="customerName"
+            name="customerName"
+            value={serviceData.customerName}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerId">Customer ID:</label>
+          <select
             id="customerId"
             name="customerId"
             value={serviceData.customerId}
-            onChange={handleChange}
-          />
+            onChange={(e) => handleCustomerSelect(e.target.value)}
+          >
+            <option value={0}>Select Customer</option>
+            {customerList.map((customer) => (
+              <option key={customer.customerId} value={customer.customerId}>
+                {customer.customerName}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="serviceDate">Service Date:</label>
@@ -77,13 +122,15 @@ const CreateNewServiceComponent = () => {
         </div>
         <div>
           <label htmlFor="isServiceCompleted">Service Completed:</label>
-          <input
-            type="checkbox"
+          <select
             id="isServiceCompleted"
             name="isServiceCompleted"
-            checked={serviceData.isServiceCompleted}
+            value={serviceData.isServiceCompleted}
             onChange={handleChange}
-          />
+          >
+            <option value={true}>True</option>
+            <option value={false}>False</option>
+          </select>
         </div>
         <div>
           <label htmlFor="productName">Product Name:</label>
@@ -97,13 +144,15 @@ const CreateNewServiceComponent = () => {
         </div>
         <div>
           <label htmlFor="isFreeService">Free Service:</label>
-          <input
-            type="checkbox"
+          <select
             id="isFreeService"
             name="isFreeService"
-            checked={serviceData.isFreeService}
+            value={serviceData.isFreeService}
             onChange={handleChange}
-          />
+          >
+            <option value={true}>True</option>
+            <option value={false}>False</option>
+          </select>
         </div>
         <div>
           <Link to="/" className="btn btn-secondary">

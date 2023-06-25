@@ -33,7 +33,6 @@ const getCustomerByName = async (context) => {
     try {
         const { customerName } = context.req.validatedData;
         const customers = await Customer.findAll({ where: { customerName } });
-        if (customers.length === 0) return context.json({ message: 'Customer not found' }, 404);
         const customerData = customers.map((customer) => customer.toJSON());
         return context.json(customerData, 200);
     } catch (err) {
