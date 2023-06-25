@@ -35,6 +35,11 @@ const Navbar = () => {
               Pending Services
             </Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/upcoming-services">
+              Upcoming Services
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

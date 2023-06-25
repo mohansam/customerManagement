@@ -83,6 +83,20 @@ const getPendingServices = async (context) => {
     }
 };
 
+const getUpcomingServices = async (context) => {
+    try {
+        const currentDate = new Date();
+        const pendingServices = await Service.findAll({
+            where: { serviceDate: { [Op.gt]: currentDate }, isServiceCompleted: false },
+        });
+        const serviceData = pendingServices.map((pendingService) => pendingService.toJSON());
+        return context.json(serviceData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 const markServiceAsCompletedByServiceId = async (context) => {
     try {
         const { serviceId } = context.req.validatedData;
@@ -109,4 +123,5 @@ module.exports = {
         validateInput(serviceIdValidationSchema, 'params'),
         markServiceAsCompletedByServiceId,
     ],
+    getUpcomingServices,
 };

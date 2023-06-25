@@ -4,6 +4,8 @@ import Navbar from "./component/Navbar";
 import CreateNewCustomerComponent from "./component/CreateNewCustomerComponent";
 import CreateNewServiceComponent from "./component/CreateNewServiceComponent";
 import PendingServicesComponent from "./component/PendingServicesComponent";
+import UpcomingServicesComponent from "./component/UpcomingServicesComponent";
+
 import "./App.css";
 
 const App = () => {
@@ -23,6 +25,10 @@ const App = () => {
           <Route
             path="/pending-services"
             element={<PendingServicesComponent />}
+          />
+          <Route
+            path="/upcoming-services"
+            element={<UpcomingServicesComponent />}
           />
           <Route path="/" element={<PendingServicesComponent />} />
         </Routes>
