@@ -14,6 +14,8 @@ const CreateNewServiceComponent = () => {
   });
 
   const [customerList, setCustomerList] = useState([]);
+  const [suggestedCustomers, setSuggestedCustomers] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     if (serviceData.customerName.trim() !== "") {
@@ -23,15 +25,38 @@ const CreateNewServiceComponent = () => {
 
   const fetchCustomersByName = async () => {
     try {
+      setIsSearching(true);
       const response = await fetch(
         `/api/v1/customer/getCustomerByName?customerName=${serviceData.customerName}`
       );
       const customers = await response.json();
       setCustomerList(customers);
+      setSuggestedCustomers(customers);
+      setIsSearching(false);
     } catch (error) {
       console.error(error);
       // Handle error
+      setIsSearching(false);
     }
+  };
+
+  const handleSearchInputChange = (e) => {
+    const { value } = e.target;
+    setServiceData({ ...serviceData, customerName: value });
+
+    if (value.trim() !== "") {
+      const filteredCustomers = customerList.filter((customer) =>
+        customer.customerName.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestedCustomers(filteredCustomers);
+    } else {
+      setSuggestedCustomers(customerList);
+    }
+  };
+
+  const handleCustomerSelect = (customerId, customerName) => {
+    setServiceData({ ...serviceData, customerId, customerName });
+    setSuggestedCustomers([]);
   };
 
   const handleSubmit = async (e) => {
@@ -65,10 +90,6 @@ const CreateNewServiceComponent = () => {
     setServiceData({ ...serviceData, [name]: newValue });
   };
 
-  const handleCustomerSelect = (customerId) => {
-    setServiceData({ ...serviceData, customerId });
-  };
-
   const isFormValid = () => {
     const { customerId, serviceDate, productName } = serviceData;
     return (
@@ -90,24 +111,36 @@ const CreateNewServiceComponent = () => {
             id="customerName"
             name="customerName"
             value={serviceData.customerName}
-            onChange={handleChange}
+            onChange={handleSearchInputChange}
           />
+          {isSearching && <div>Loading...</div>}
+          {suggestedCustomers.length > 0 && (
+            <ul className="customer-suggestions">
+              {suggestedCustomers.map((customer) => (
+                <li
+                  key={customer.customerId}
+                  onClick={() =>
+                    handleCustomerSelect(
+                      customer.customerId,
+                      customer.customerName
+                    )
+                  }
+                >
+                  {customer.customerName}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <div>
           <label htmlFor="customerId">Customer ID:</label>
-          <select
+          <input
+            type="text"
             id="customerId"
             name="customerId"
             value={serviceData.customerId}
-            onChange={(e) => handleCustomerSelect(e.target.value)}
-          >
-            <option value={0}>Select Customer</option>
-            {customerList.map((customer) => (
-              <option key={customer.customerId} value={customer.customerId}>
-                {customer.customerName}
-              </option>
-            ))}
-          </select>
+            readOnly
+          />
         </div>
         <div>
           <label htmlFor="serviceDate">Service Date:</label>

@@ -1,8 +1,8 @@
 const event = {
     version: '2.0',
     routeKey: '$default',
-    rawPath: '/api/v1/service/getPendingServices',
-    rawQueryString: 'customerName=John%20Doe',
+    rawPath: '/api/v1/customer/getCustomerByName',
+    rawQueryString: 'customerName=John',
     headers: {
         'sec-fetch-mode': 'navigate',
         'x-amzn-tls-version': 'TLSv1.2',

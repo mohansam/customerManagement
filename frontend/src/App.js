@@ -24,6 +24,7 @@ const App = () => {
             path="/pending-services"
             element={<PendingServicesComponent />}
           />
+          <Route path="/" element={<PendingServicesComponent />} />
         </Routes>
       </div>
     </Router>

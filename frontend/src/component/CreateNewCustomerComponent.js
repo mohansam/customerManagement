@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./CreateNewCustomerComponent.css";
 
 const CreateNewCustomerComponent = () => {
+  const navigate = useNavigate();
   const [customerData, setCustomerData] = useState({
     customerName: "",
     customerAddress: "",
@@ -23,7 +24,7 @@ const CreateNewCustomerComponent = () => {
 
       if (response.ok) {
         // Handle success or redirect to another page
-        window.location.href = "/";
+        navigate("/create-service");
       } else {
         console.error("Request failed");
         // Handle error

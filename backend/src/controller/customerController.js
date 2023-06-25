@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
 const {
@@ -32,7 +33,13 @@ const updateCustomer = async (context) => {
 const getCustomerByName = async (context) => {
     try {
         const { customerName } = context.req.validatedData;
-        const customers = await Customer.findAll({ where: { customerName } });
+        const customers = await Customer.findAll({
+            where: {
+                customerName: {
+                    [Op.like]: `%${customerName}%`,
+                },
+            },
+        });
         const customerData = customers.map((customer) => customer.toJSON());
         return context.json(customerData, 200);
     } catch (err) {
