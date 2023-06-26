@@ -71,8 +71,19 @@ const CreateNewServiceComponent = () => {
       });
 
       if (response.ok) {
-        // Handle success or redirect to another page
-        navigate("/pending-services");
+        // Get the current date
+        const currentDate = new Date().toISOString().split("T")[0];
+
+        // Convert serviceDate to a Date object
+        const selectedDate = new Date(serviceData.serviceDate);
+
+        if (selectedDate > new Date(currentDate)) {
+          // If serviceDate is in the future, navigate to "upcoming-services"
+          navigate("/upcoming-services");
+        } else {
+          // If serviceDate is today or in the past, navigate to "pending-services"
+          navigate("/pending-services");
+        }
       } else {
         console.error("Request failed");
         // Handle error

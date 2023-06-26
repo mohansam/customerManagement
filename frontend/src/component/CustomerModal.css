@@ -1,0 +1,41 @@
+/* CustomerModal.css */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #1d2e2f;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+p {
+    margin: 10px 0;
+}
+
+/* Additional styles can be added as per the design requirements */

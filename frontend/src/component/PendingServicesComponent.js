@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CustomerModal from "./CustomerModal";
 import "./PendingServicesComponent.css";
 
 const PendingServicesComponent = () => {
@@ -6,6 +7,7 @@ const PendingServicesComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
   const [customerData, setCustomerData] = useState(null);
+  const [isMarkingCompleted, setIsMarkingCompleted] = useState(false);
 
   useEffect(() => {
     fetch("/api/v1/service/getPendingServices")
@@ -22,6 +24,7 @@ const PendingServicesComponent = () => {
   }, []);
 
   const markServiceAsCompleted = (serviceId) => {
+    setIsMarkingCompleted(true);
     setIsLoading(true);
     // Make API call to mark service as completed
     fetch(`/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`, {
@@ -43,19 +46,25 @@ const PendingServicesComponent = () => {
         console.error(error);
         setIsLoading(false);
         // Handle error
+      })
+      .finally(() => {
+        setIsMarkingCompleted(false);
       });
   };
 
   const fetchCustomerById = (customerId) => {
+    setIsLoading(true);
     fetch(`/api/v1/customer/getCustomerById/${customerId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Customer data:", data);
         setCustomerData(data);
         setSelectedCustomerId(customerId);
+        setIsLoading(false);
+        console.log("Customer data:", customerData);
       })
       .catch((error) => {
         console.error(error);
+        setIsLoading(false);
         // Handle error
       });
   };
@@ -100,8 +109,9 @@ const PendingServicesComponent = () => {
                   <button
                     type="button"
                     onClick={() => markServiceAsCompleted(service.serviceId)}
+                    disabled={isMarkingCompleted}
                   >
-                    Mark as Completed
+                    {isMarkingCompleted ? "Marking..." : "Mark as Completed"}
                   </button>
                 </td>
               </tr>
@@ -110,23 +120,12 @@ const PendingServicesComponent = () => {
         </table>
       )}
 
-      {selectedCustomerId && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <h2>Customer Details</h2>
-            <p>Customer ID: {selectedCustomerId}</p>
-            {customerData && (
-              <div>
-                <p>Customer Name: {customerData.customerName}</p>
-                <p>Customer Address: {customerData.customerAddress}</p>
-                <p>Customer Mobile Number: {customerData.customerMobileNum}</p>
-              </div>
-            )}
-          </div>
-        </div>
+      {selectedCustomerId && !isMarkingCompleted && (
+        <CustomerModal
+          customerData={customerData}
+          closeModal={closeModal}
+          isLoading={isLoading}
+        />
       )}
     </div>
   );
