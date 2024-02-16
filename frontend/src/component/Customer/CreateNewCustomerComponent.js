@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./CreateNewCustomerComponent.css";
 
 const CreateNewCustomerComponent = () => {
+  const hostName =
+    "c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws";
   const navigate = useNavigate();
   const [customerData, setCustomerData] = useState({
     customerName: "",
@@ -14,13 +16,16 @@ const CreateNewCustomerComponent = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/v1/customer/createNewCustomer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(customerData),
-      });
+      const response = await fetch(
+        `https://${hostName}/api/v1/customer/createNewCustomer`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(customerData),
+        }
+      );
 
       if (response.ok) {
         // Handle success or redirect to another page

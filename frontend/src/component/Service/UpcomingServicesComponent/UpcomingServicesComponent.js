@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./UpcomingServicesComponent.css";
 
 const UpcomingServicesComponent = () => {
+  const hostName =
+    "c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws";
   const [upcomingServices, setUpcomingServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/v1/service/getUpcomingServices")
+    fetch(`https://${hostName}/api/v1/service/getUpcomingServices`)
       .then((response) => response.json())
       .then((data) => {
         setUpcomingServices(data);
@@ -22,12 +24,15 @@ const UpcomingServicesComponent = () => {
   const markServiceAsCompleted = (serviceId) => {
     setIsLoading(true);
     // Make API call to mark service as completed
-    fetch(`/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://${hostName}/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("Service marked as completed:", data);

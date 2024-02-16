@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./CreateNewServiceComponent.css";
 
 const CreateNewServiceComponent = () => {
+  const hostName =
+    "c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws";
   const navigate = useNavigate();
   const [serviceData, setServiceData] = useState({
     serviceDate: "",
@@ -16,25 +18,24 @@ const CreateNewServiceComponent = () => {
   const [suggestedCustomers, setSuggestedCustomers] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
-  const fetchCustomersByName = async () => {
-    try {
-      setIsSearching(true);
-      const response = await fetch(
-        `/api/v1/customer/getCustomerByName?customerName=${serviceData.customerName}`
-      );
-      const customers = await response.json();
-      setCustomerList(customers);
-      setSuggestedCustomers(customers);
-      setIsSearching(false);
-    } catch (error) {
-      console.error(error);
-      // Handle error
-      setIsSearching(false);
-    }
-  };
-
   useEffect(() => {
     if (serviceData.customerName.trim() !== "") {
+      const fetchCustomersByName = async () => {
+        try {
+          setIsSearching(true);
+          const response = await fetch(
+            `https://${hostName}/api/v1/customer/getCustomerByName?customerName=${serviceData.customerName}`
+          );
+          const customers = await response.json();
+          setCustomerList(customers);
+          setSuggestedCustomers(customers);
+          setIsSearching(false);
+        } catch (error) {
+          console.error(error);
+          // Handle error
+          setIsSearching(false);
+        }
+      };
       fetchCustomersByName();
     }
   }, [serviceData.customerName]);
@@ -62,13 +63,16 @@ const CreateNewServiceComponent = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/v1/service/createNewService", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(serviceData),
-      });
+      const response = await fetch(
+        `https://${hostName}/api/v1/service/createNewService`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(serviceData),
+        }
+      );
 
       if (response.ok) {
         // Get the current date

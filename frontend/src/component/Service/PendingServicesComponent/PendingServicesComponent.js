@@ -3,6 +3,8 @@ import CustomerModal from "../../Customer/CustomerModal";
 import "./PendingServicesComponent.css";
 
 const PendingServicesComponent = () => {
+  const hostName =
+    "c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws";
   const [pendingServices, setPendingServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
@@ -10,7 +12,7 @@ const PendingServicesComponent = () => {
   const [isMarkingCompleted, setIsMarkingCompleted] = useState(false);
 
   useEffect(() => {
-    fetch("/api/v1/service/getPendingServices")
+    fetch(`https://${hostName}/api/v1/service/getPendingServices`)
       .then((response) => response.json())
       .then((data) => {
         setPendingServices(data);
@@ -27,12 +29,15 @@ const PendingServicesComponent = () => {
     setIsMarkingCompleted(true);
     setIsLoading(true);
     // Make API call to mark service as completed
-    fetch(`/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://${hostName}/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("Service marked as completed:", data);
@@ -54,7 +59,7 @@ const PendingServicesComponent = () => {
 
   const fetchCustomerById = (customerId) => {
     setIsLoading(true);
-    fetch(`/api/v1/customer/getCustomerById/${customerId}`)
+    fetch(`https://${hostName}/api/v1/customer/getCustomerById/${customerId}`)
       .then((response) => response.json())
       .then((data) => {
         setCustomerData(data);
