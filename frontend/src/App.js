@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./component/Navbar";
-import CreateNewCustomerComponent from "./component/CreateNewCustomerComponent";
-import CreateNewServiceComponent from "./component/CreateNewServiceComponent";
-import PendingServicesComponent from "./component/PendingServicesComponent";
-import UpcomingServicesComponent from "./component/UpcomingServicesComponent";
+import CreateNewCustomerComponent from "./component/Customer/CreateNewCustomerComponent";
+import CreateNewServiceComponent from "./component/Service/CreateNewServiceComponent/CreateNewServiceComponent";
+import PendingServicesComponent from "./component/Service/PendingServicesComponent/PendingServicesComponent";
+import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent/UpcomingServicesComponent";
 
 import "./App.css";
 

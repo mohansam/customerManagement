@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CustomerModal from "./CustomerModal";
+import CustomerModal from "../../Customer/CustomerModal";
 import "./PendingServicesComponent.css";
 
 const PendingServicesComponent = () => {

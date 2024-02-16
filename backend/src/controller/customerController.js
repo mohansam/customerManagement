@@ -10,6 +10,8 @@ const {
 const createNewCustomer = async (context) => {
     try {
         const { customerName, customerAddress, customerMobileNum } = context.req.validatedData;
+        const existingCustomer = await Customer.findOne({ where: { customerMobileNum } });
+        if (existingCustomer) return context.json({ message: 'Customer with given mobile number already exists' }, 400);
         const newCustomer = await Customer.create({ customerName, customerAddress, customerMobileNum });
         return context.json(newCustomer.toJSON(), 200);
     } catch (err) {

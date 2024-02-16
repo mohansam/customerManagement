@@ -1,0 +1,26 @@
+
+
+
+
+
+1. Need to store customer details:
+               fields:--> customerName, customerAddress, customerMobileNum
+
+2. Need to store Service details:
+              fields-----> serviceId, productName, serviceDate, isFreeService,
+                           isServiceCompleted
+
+
+    Query Needs to perform on Service table:
+         queryServiceTable to get all the pendingService where serviceDate<currentDate and isServiceCompleted=false
+         queryServiceTable to get all the upComingService where serviceDate>currentDate and isServiceCompleted=false
+         queryServiceTable to get all the completedService where isServiceCompleted=true
+         list the services of the customer based on customerId
+         map service details with customerDetails
+        
+         updateQuery:
+              set isServiceCompleted to true based where serviceId=serviceId
+
+             
+
+            

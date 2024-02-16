@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { Op } = require('sequelize');
 const { Service } = require('../model/serviceModel');
 const { Customer } = require('../model/customerModel');
@@ -97,6 +98,14 @@ const getUpcomingServices = async (context) => {
     }
 };
 
+const getAllTheServicesBelongsToCustomerId = async (context) => {
+    const { customerId } = context.req.validatedData;
+    const services = await Service.findAll({
+        where: { customerId },
+    });
+    return context.json(services, 200);
+};
+
 const markServiceAsCompletedByServiceId = async (context) => {
     try {
         const { serviceId } = context.req.validatedData;
@@ -124,4 +133,8 @@ module.exports = {
         markServiceAsCompletedByServiceId,
     ],
     getUpcomingServices,
+    getAllTheServicesBelongsToCustomerId: [
+        validateInput(customerIdValidationSchema, 'params'),
+        getAllTheServicesBelongsToCustomerId,
+    ],
 };

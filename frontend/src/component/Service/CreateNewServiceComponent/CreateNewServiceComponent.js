@@ -16,12 +16,6 @@ const CreateNewServiceComponent = () => {
   const [suggestedCustomers, setSuggestedCustomers] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
-  useEffect(() => {
-    if (serviceData.customerName.trim() !== "") {
-      fetchCustomersByName();
-    }
-  }, [serviceData.customerName]);
-
   const fetchCustomersByName = async () => {
     try {
       setIsSearching(true);
@@ -38,6 +32,12 @@ const CreateNewServiceComponent = () => {
       setIsSearching(false);
     }
   };
+
+  useEffect(() => {
+    if (serviceData.customerName.trim() !== "") {
+      fetchCustomersByName();
+    }
+  }, [serviceData.customerName]);
 
   const handleSearchInputChange = (e) => {
     const { value } = e.target;

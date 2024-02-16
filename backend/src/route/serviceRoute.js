@@ -7,6 +7,7 @@ const {
     getPendingServices,
     markServiceAsCompletedByServiceId,
     getUpcomingServices,
+    getAllTheServicesBelongsToCustomerId,
 } = require('../controller/serviceController');
 
 const serviceRoute = new Hono();
@@ -18,5 +19,6 @@ serviceRoute.get('/getServiceByCustomerId/:customerId', ...getServiceByCustomerI
 serviceRoute.get('/getPendingServices', getPendingServices);
 serviceRoute.get('/getUpcomingServices', getUpcomingServices);
 serviceRoute.post('/markServiceAsCompletedByServiceId/:serviceId', ...markServiceAsCompletedByServiceId);
+serviceRoute.get('/getAllTheServicesBelongsToCustomerId/:customerId', ...getAllTheServicesBelongsToCustomerId);
 
 module.exports = { serviceRoute };
