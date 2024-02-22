@@ -27,7 +27,7 @@ const UpcomingServicesComponent = () => {
     fetch(
       `https://${hostName}/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },

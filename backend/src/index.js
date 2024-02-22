@@ -9,21 +9,16 @@ const { connectToDb } = require('./Db/dbConnection');
 
 const app = new Hono();
 
-app.get('/', async (context) => context.json({ statusMessage: 'hello from customer management' }, 200));
+const { FRONT_END_ORIGIN_URI } = process.env;
 
-app.use('/api/*', cors());
 app.use(
-    '/api/*',
+    '/api/v1/*',
     cors({
-        origin: 'https://www.customer-managment.pages.dev',
-        allowHeaders: ['X-Custom-Header', 'Upgrade-Insecure-Requests'],
-        allowMethods: ['POST', 'GET', 'OPTIONS'],
-        exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
-        maxAge: 600,
-        credentials: true,
+        origin: [FRONT_END_ORIGIN_URI],
     })
 );
 
+app.get('/', async (context) => context.json({ statusMessage: 'hello from customer management' }, 200));
 app.route('/api/v1/customer', customerRoute);
 app.route('/api/v1/service', serviceRoute);
 

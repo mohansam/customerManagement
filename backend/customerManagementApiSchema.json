@@ -1,0 +1,861 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "customerManagementApiSchema",
+        "version": "1.0.0",
+        "description": "API for customerManagement"
+    },
+    "servers": [
+        {
+            "url": "https://c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws/api/v1"
+        }
+    ],
+    "paths": {
+        "/customer/createNewCustomer": {
+            "post": {
+                "summary": "Create a new customer",
+                "tags": [
+                    "Customer"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "customerName",
+                                    "customerAddress",
+                                    "customerMobileNum"
+                                ],
+                                "properties": {
+                                    "customerName": {
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "description": "Customer name must be a string and is required. Should not exceed 50 characters."
+                                    },
+                                    "customerAddress": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "description": "Customer address must be a string and is required. Cannot exceed 100 characters."
+                                    },
+                                    "customerMobileNum": {
+                                        "type": "string",
+                                        "pattern": "^\\d{10}$",
+                                        "description": "Customer mobile number must be a 10-digit number and is required."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "New customer created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "new customer created successfully"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Customer with given mobile number already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Customer with given mobile number already exists"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/getCustomerByName": {
+            "get": {
+                "summary": "Retrieve customer by name",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "customerName",
+                        "in": "query",
+                        "required": true,
+                        "description": "The name of the customer to retrieve.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 50,
+                            "description": "Customer name must be a string and is required. Should not exceed 50 characters."
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of customers matching the name or an empty list if no match is found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "customerId": {
+                                                "type": "number"
+                                            },
+                                            "customerName": {
+                                                "type": "string"
+                                            },
+                                            "customerAddress": {
+                                                "type": "string"
+                                            },
+                                            "customerMobileNum": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "description": "An array of customer objects or an empty array."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/getAllTheCustomers": {
+            "get": {
+                "summary": "Retrieve all customers with pagination",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number of the customer list.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "default": 1
+                        },
+                        "required": false
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Number of customers per page.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100,
+                            "default": 10
+                        },
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of customers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "totalItems": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "totalPages": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "currentPage": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "customers": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "customerId": {
+                                                        "type": "integer"
+                                                    },
+                                                    "customerName": {
+                                                        "type": "string"
+                                                    },
+                                                    "customerAddress": {
+                                                        "type": "string"
+                                                    },
+                                                    "customerMobileNum": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/getCustomerById/{customerId}": {
+            "get": {
+                "summary": "Retrieve a customer by their ID",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The unique identifier of the customer.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 1,
+                            "description": "Must be a positive integer."
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "customerId": {
+                                            "type": "integer"
+                                        },
+                                        "customerName": {
+                                            "type": "string"
+                                        },
+                                        "customerAddress": {
+                                            "type": "string"
+                                        },
+                                        "customerMobileNum": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "customerId": 1,
+                                        "customerName": "John Doe",
+                                        "customerAddress": "123 Main St",
+                                        "customerMobileNum": "1234567890"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Customer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Customer not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/updateCustomer/{customerId}": {
+            "put": {
+                "summary": "Update customer information",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The unique identifier of the customer to update.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 1,
+                            "description": "Must be a positive integer."
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "customerName",
+                                    "customerAddress",
+                                    "customerMobileNum"
+                                ],
+                                "properties": {
+                                    "customerName": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "customerAddress": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "customerMobileNum": {
+                                        "type": "string",
+                                        "pattern": "^\\d{10}$"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Customer information updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "customerId": {
+                                            "type": "integer"
+                                        },
+                                        "customerName": {
+                                            "type": "string"
+                                        },
+                                        "customerAddress": {
+                                            "type": "string"
+                                        },
+                                        "customerMobileNum": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Customer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Customer not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/createNewService": {
+            "post": {
+                "summary": "Create a new service",
+                "tags": [
+                    "Service"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "customerId",
+                                    "customerName",
+                                    "serviceDate",
+                                    "isServiceCompleted",
+                                    "productName",
+                                    "isFreeService"
+                                ],
+                                "properties": {
+                                    "customerId": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "description": "Must be a positive integer.",
+                                        "minimum": 1
+                                    },
+                                    "customerName": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    },
+                                    "serviceDate": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Must be in ISO 8601 format."
+                                    },
+                                    "isServiceCompleted": {
+                                        "type": "boolean"
+                                    },
+                                    "productName": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "isFreeService": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "New service created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "new service created successfully"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Customer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Customer not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/getPendingServices": {
+            "get": {
+                "summary": "Retrieve all pending services where serviceDate is less than the current date and isServiceCompleted is false",
+                "tags": [
+                    "Service"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of pending services",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "serviceId": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "description": "Unique identifier of the service"
+                                            },
+                                            "customerName": {
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "description": "Name of the customer"
+                                            },
+                                            "serviceDate": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "Scheduled date of the service"
+                                            },
+                                            "isServiceCompleted": {
+                                                "type": "boolean",
+                                                "description": "Whether the service has been completed"
+                                            },
+                                            "productName": {
+                                                "type": "string",
+                                                "maxLength": 100,
+                                                "description": "Name of the product for the service"
+                                            },
+                                            "isFreeService": {
+                                                "type": "boolean",
+                                                "description": "Whether the service is provided for free"
+                                            }
+                                        }
+                                    },
+                                    "description": "An array of pending service objects."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/getUpcomingServices": {
+            "get": {
+                "summary": "Retrieve all pending services where serviceDate is greater than the current date and isServiceCompleted is false",
+                "tags": [
+                    "Service"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of pending services",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "serviceId": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "description": "Unique identifier of the service"
+                                            },
+                                            "customerName": {
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "description": "Name of the customer"
+                                            },
+                                            "serviceDate": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "Scheduled date of the service"
+                                            },
+                                            "isServiceCompleted": {
+                                                "type": "boolean",
+                                                "description": "Whether the service has been completed"
+                                            },
+                                            "productName": {
+                                                "type": "string",
+                                                "maxLength": 100,
+                                                "description": "Name of the product for the service"
+                                            },
+                                            "isFreeService": {
+                                                "type": "boolean",
+                                                "description": "Whether the service is provided for free"
+                                            }
+                                        }
+                                    },
+                                    "description": "An array of pending service objects."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/markServiceAsCompletedByServiceId/{serviceId}": {
+            "put": {
+                "summary": "Mark a service as completed by its ID",
+                "tags": [
+                    "Service"
+                ],
+                "parameters": [
+                    {
+                        "name": "serviceId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The unique identifier of the service to mark as completed.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 1,
+                            "description": "Must be a positive integer."
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Service update successfully"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Service not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/getAllTheServicesBelongsToCustomerId/{customerId}": {
+            "get": {
+                "summary": "List all the service of the customer",
+                "tags": [
+                    "Service"
+                ],
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The unique identifier of the customer to update.",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 1,
+                            "description": "Must be a positive integer."
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of services belongs to customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "serviceId": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "description": "Unique identifier of the service"
+                                            },
+                                            "customerName": {
+                                                "type": "string",
+                                                "maxLength": 50,
+                                                "description": "Name of the customer"
+                                            },
+                                            "serviceDate": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "Scheduled date of the service"
+                                            },
+                                            "isServiceCompleted": {
+                                                "type": "boolean",
+                                                "description": "Whether the service has been completed"
+                                            },
+                                            "productName": {
+                                                "type": "string",
+                                                "maxLength": 100,
+                                                "description": "Name of the product for the service"
+                                            },
+                                            "isFreeService": {
+                                                "type": "boolean",
+                                                "description": "Whether the service is provided for free"
+                                            }
+                                        }
+                                    },
+                                    "description": "An array of service objects."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -12,7 +12,7 @@ const createNewService = async (context) => {
             context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
-        const newService = await Service.create({
+        await Service.create({
             customerId,
             customerName,
             serviceDate,
@@ -20,7 +20,7 @@ const createNewService = async (context) => {
             productName,
             isFreeService,
         });
-        return context.json(newService.toJSON(), 200);
+        return context.json({ message: 'new service created successfully' }, 201);
     } catch (err) {
         console.log(err);
         return context.json({ message: 'Internal server error' }, 500);
@@ -57,18 +57,6 @@ const getServiceByServiceId = async (context) => {
     }
 };
 
-const getServiceByCustomerId = async (context) => {
-    try {
-        const { customerId } = context.req.validatedData;
-        const services = await Service.findAll({ where: { customerId } });
-        const serviceData = services.map((service) => service.toJSON());
-        return context.json(serviceData, 200);
-    } catch (err) {
-        console.log(err);
-        return context.json({ message: 'Internal server error' }, 500);
-    }
-};
-
 const getPendingServices = async (context) => {
     try {
         const currentDate = new Date();
@@ -76,7 +64,15 @@ const getPendingServices = async (context) => {
         const pendingServices = await Service.findAll({
             where: { serviceDate: { [Op.lt]: currentDate }, isServiceCompleted: false },
         });
-        const serviceData = pendingServices.map((pendingService) => pendingService.toJSON());
+        const serviceData = pendingServices.map((pendingService) => ({
+            serviceId: pendingService.serviceId,
+            customerId: pendingService.customerId,
+            customerName: pendingService.customerName,
+            productName: pendingService.productName,
+            serviceDate: pendingService.serviceDate,
+            isServiceCompleted: pendingService.isServiceCompleted,
+            isFreeService: pendingService.isFreeService,
+        }));
         return context.json(serviceData, 200);
     } catch (err) {
         console.error(err);
@@ -87,10 +83,18 @@ const getPendingServices = async (context) => {
 const getUpcomingServices = async (context) => {
     try {
         const currentDate = new Date();
-        const pendingServices = await Service.findAll({
+        const upComingServices = await Service.findAll({
             where: { serviceDate: { [Op.gt]: currentDate }, isServiceCompleted: false },
         });
-        const serviceData = pendingServices.map((pendingService) => pendingService.toJSON());
+        const serviceData = upComingServices.map((upComingService) => ({
+            serviceId: upComingService.serviceId,
+            customerId: upComingService.customerId,
+            customerName: upComingService.customerName,
+            productName: upComingService.productName,
+            serviceDate: upComingService.serviceDate,
+            isServiceCompleted: upComingService.isServiceCompleted,
+            isFreeService: upComingService.isFreeService,
+        }));
         return context.json(serviceData, 200);
     } catch (err) {
         console.error(err);
@@ -99,11 +103,25 @@ const getUpcomingServices = async (context) => {
 };
 
 const getAllTheServicesBelongsToCustomerId = async (context) => {
-    const { customerId } = context.req.validatedData;
-    const services = await Service.findAll({
-        where: { customerId },
-    });
-    return context.json(services, 200);
+    try {
+        const { customerId } = context.req.validatedData;
+        const services = await Service.findAll({
+            where: { customerId },
+        });
+        const serviceData = services.map((upComingService) => ({
+            serviceId: upComingService.serviceId,
+            customerId: upComingService.customerId,
+            customerName: upComingService.customerName,
+            productName: upComingService.productName,
+            serviceDate: upComingService.serviceDate,
+            isServiceCompleted: upComingService.isServiceCompleted,
+            isFreeService: upComingService.isFreeService,
+        }));
+        return context.json(serviceData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
 };
 
 const markServiceAsCompletedByServiceId = async (context) => {
@@ -126,7 +144,6 @@ module.exports = {
         updateService,
     ],
     getServiceByServiceId: [validateInput(serviceIdValidationSchema, 'params'), getServiceByServiceId],
-    getServiceByCustomerId: [validateInput(customerIdValidationSchema, 'params'), getServiceByCustomerId],
     getPendingServices,
     markServiceAsCompletedByServiceId: [
         validateInput(serviceIdValidationSchema, 'params'),

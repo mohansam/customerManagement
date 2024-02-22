@@ -37,4 +37,18 @@ const customerIdValidationSchema = Joi.object({
     }),
 });
 
-module.exports = { customerSchema, customerIdValidationSchema, customerNameSchema };
+const paginationSchema = Joi.object({
+    page: Joi.number()
+        .integer()
+        .min(1) // Ensure page number is at least 1
+        .default(1) // Default to 1 if not specified
+        .optional(), // Make this parameter optional
+    size: Joi.number()
+        .integer()
+        .min(1) // Ensure size is at least 1
+        .max(100) // Optionally set a maximum size to avoid too large requests
+        .default(10) // Default to 10 if not specified
+        .optional(), // Make this parameter optional
+});
+
+module.exports = { customerSchema, customerIdValidationSchema, customerNameSchema, paginationSchema };

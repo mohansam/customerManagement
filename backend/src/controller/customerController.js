@@ -5,6 +5,7 @@ const {
     customerSchema,
     customerIdValidationSchema,
     customerNameSchema,
+    paginationSchema,
 } = require('../schema/customerValidationSchema');
 
 const createNewCustomer = async (context) => {
@@ -12,8 +13,8 @@ const createNewCustomer = async (context) => {
         const { customerName, customerAddress, customerMobileNum } = context.req.validatedData;
         const existingCustomer = await Customer.findOne({ where: { customerMobileNum } });
         if (existingCustomer) return context.json({ message: 'Customer with given mobile number already exists' }, 400);
-        const newCustomer = await Customer.create({ customerName, customerAddress, customerMobileNum });
-        return context.json(newCustomer.toJSON(), 200);
+        await Customer.create({ customerName, customerAddress, customerMobileNum });
+        return context.json({ message: 'new customer created successfully' }, 201);
     } catch (err) {
         console.log(err);
         return context.json({ message: 'Internal server error' }, 500);
@@ -42,7 +43,12 @@ const getCustomerByName = async (context) => {
                 },
             },
         });
-        const customerData = customers.map((customer) => customer.toJSON());
+        const customerData = customers.map((customer) => ({
+            customerId: customer.customerId,
+            customerName: customer.customerName,
+            customerAddress: customer.customerAddress,
+            customerMobileNum: customer.customerMobileNum,
+        }));
         return context.json(customerData, 200);
     } catch (err) {
         console.error(err);
@@ -55,12 +61,49 @@ const getCustomerById = async (context) => {
         const { customerId } = context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
-        return context.json(customer.toJSON(), 200);
+        return context.json(
+            {
+                customerId: customer.customerId,
+                customerName: customer.customerName,
+                customerAddress: customer.customerAddress,
+                customerMobileNum: customer.customerMobileNum,
+            },
+            200
+        );
     } catch (err) {
         console.error(err);
         return context.json({ message: 'Internal server error' }, 500);
     }
 };
+
+const getAllTheCustomers = async (context) => {
+    try {
+        const { page, size } = context.req.validatedData;
+        const limit = parseInt(size, 10);
+        const offset = (page - 1) * size;
+
+        const customers = await Customer.findAndCountAll({
+            limit,
+            offset,
+            order: [['customerId', 'ASC']], // optional, for ordering results
+        });
+
+        return context.json({
+            totalItems: customers.count,
+            customers: customers.rows.map((customer) => ({
+                customerId: customer.customerId,
+                customerName: customer.customerName,
+                customerAddress: customer.customerAddress,
+                customerMobileNum: customer.customerMobileNum,
+            })),
+            totalPages: Math.ceil(customers.count / limit),
+            currentPage: parseInt(page, 10),
+        });
+    } catch (error) {
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 module.exports = {
     createNewCustomer: [validateInput(customerSchema, 'body'), createNewCustomer],
     updateCustomer: [
@@ -70,4 +113,5 @@ module.exports = {
     ],
     getCustomerByName: [validateInput(customerNameSchema, 'query'), getCustomerByName],
     getCustomerById: [validateInput(customerIdValidationSchema, 'params'), getCustomerById],
+    getAllTheCustomers: [validateInput(paginationSchema, 'query'), getAllTheCustomers],
 };
