@@ -3,6 +3,6 @@ const { createNewProduct } = require('../controller/productController');
 
 const productRoute = new Hono();
 
-productRoute.post('/createNewService', ...createNewProduct);
+productRoute.post('/createNewProduct', ...createNewProduct);
 
 module.exports = { productRoute };

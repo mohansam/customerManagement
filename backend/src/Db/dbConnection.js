@@ -4,7 +4,7 @@ let dbConnection = false;
 const connectToDb = async () => {
     if (dbConnection) return '';
     await sequelize.authenticate();
-    //  await sequelize.sync({ alter: true });
+    // await sequelize.sync({ alter: true });
     dbConnection = true;
     return '';
 };

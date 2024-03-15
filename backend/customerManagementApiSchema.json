@@ -14,20 +14,14 @@
         "/customer/createNewCustomer": {
             "post": {
                 "summary": "Create a new customer",
-                "tags": [
-                    "Customer"
-                ],
+                "tags": ["Customer"],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "type": "object",
-                                "required": [
-                                    "customerName",
-                                    "customerAddress",
-                                    "customerMobileNum"
-                                ],
+                                "required": ["customerName", "customerAddress", "customerMobileNum"],
                                 "properties": {
                                     "customerName": {
                                         "type": "string",
@@ -104,9 +98,7 @@
         "/customer/getCustomerByName": {
             "get": {
                 "summary": "Retrieve customer by name",
-                "tags": [
-                    "Customer"
-                ],
+                "tags": ["Customer"],
                 "parameters": [
                     {
                         "name": "customerName",
@@ -171,9 +163,7 @@
         "/customer/getAllTheCustomers": {
             "get": {
                 "summary": "Retrieve all customers with pagination",
-                "tags": [
-                    "Customer"
-                ],
+                "tags": ["Customer"],
                 "parameters": [
                     {
                         "name": "page",
@@ -266,9 +256,7 @@
         "/customer/getCustomerById/{customerId}": {
             "get": {
                 "summary": "Retrieve a customer by their ID",
-                "tags": [
-                    "Customer"
-                ],
+                "tags": ["Customer"],
                 "parameters": [
                     {
                         "name": "customerId",
@@ -352,9 +340,7 @@
         "/customer/updateCustomer/{customerId}": {
             "put": {
                 "summary": "Update customer information",
-                "tags": [
-                    "Customer"
-                ],
+                "tags": ["Customer"],
                 "parameters": [
                     {
                         "name": "customerId",
@@ -375,11 +361,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "object",
-                                "required": [
-                                    "customerName",
-                                    "customerAddress",
-                                    "customerMobileNum"
-                                ],
+                                "required": ["customerName", "customerAddress", "customerMobileNum"],
                                 "properties": {
                                     "customerName": {
                                         "type": "string",
@@ -461,9 +443,7 @@
         "/service/createNewService": {
             "post": {
                 "summary": "Create a new service",
-                "tags": [
-                    "Service"
-                ],
+                "tags": ["Service"],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -564,9 +544,7 @@
         "/service/getPendingServices": {
             "get": {
                 "summary": "Retrieve all pending services where serviceDate is less than the current date and isServiceCompleted is false",
-                "tags": [
-                    "Service"
-                ],
+                "tags": ["Service"],
                 "responses": {
                     "200": {
                         "description": "List of pending services",
@@ -634,9 +612,7 @@
         "/service/getUpcomingServices": {
             "get": {
                 "summary": "Retrieve all pending services where serviceDate is greater than the current date and isServiceCompleted is false",
-                "tags": [
-                    "Service"
-                ],
+                "tags": ["Service"],
                 "responses": {
                     "200": {
                         "description": "List of pending services",
@@ -704,9 +680,7 @@
         "/service/markServiceAsCompletedByServiceId/{serviceId}": {
             "put": {
                 "summary": "Mark a service as completed by its ID",
-                "tags": [
-                    "Service"
-                ],
+                "tags": ["Service"],
                 "parameters": [
                     {
                         "name": "serviceId",
@@ -776,9 +750,7 @@
         "/service/getAllTheServicesBelongsToCustomerId/{customerId}": {
             "get": {
                 "summary": "List all the service of the customer",
-                "tags": [
-                    "Service"
-                ],
+                "tags": ["Service"],
                 "parameters": [
                     {
                         "name": "customerId",
@@ -834,6 +806,119 @@
                                         }
                                     },
                                     "description": "An array of service objects."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/createNewProduct": {
+            "post": {
+                "summary": "Create a new product",
+                "tags": ["Product"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "customerId",
+                                    "productName",
+                                    "dateOfInstallation",
+                                    "warranty",
+                                    "model",
+                                    "pump",
+                                    "membrane",
+                                    "powerSupply"
+                                ],
+                                "properties": {
+                                    "customerId": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "minimum": 1,
+                                        "description": "Must be a positive integer."
+                                    },
+                                    "productName": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "dateOfInstallation": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Must be in ISO 8601 format."
+                                    },
+                                    "warranty": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "model": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "pump": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "membrane": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "powerSupply": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "New product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "new product created successfully"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Customer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "customer not found"
+                                        }
+                                    }
                                 }
                             }
                         }

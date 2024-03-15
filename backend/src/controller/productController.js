@@ -2,7 +2,7 @@
 const { Product } = require('../model/productModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
-const { productSchema } = require('../schema/serviceValidationSchema');
+const { productSchema } = require('../schema/productValidationSchema');
 
 const createNewProduct = async (context) => {
     try {
