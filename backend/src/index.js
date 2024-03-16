@@ -25,6 +25,7 @@ app.route('/api/v1/service', serviceRoute);
 app.route('/api/v1/product', productRoute);
 
 const handler = async (event) => {
+    console.log(JSON.stringify(event));
     await connectToDb();
     const httpHandler = handle(app);
     const httpRes = await httpHandler(event);

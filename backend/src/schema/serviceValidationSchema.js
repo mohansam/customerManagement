@@ -1,12 +1,24 @@
 const Joi = require('joi');
 
 const serviceSchema = Joi.object({
-    customerId: Joi.number().integer().positive().required().messages({
-        'number.base': 'Invalid customer ID, must be a number',
-        'number.integer': 'Invalid customer ID, must be an integer',
-        'number.positive': 'Invalid customer ID, must be a positive number',
-        'any.required': 'Customer ID is required',
-    }),
+    customerId: Joi.string()
+        .guid({
+            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
+        })
+        .required()
+        .messages({
+            'string.guid': 'Invalid ID, must be a valid UUID',
+            'any.required': 'ID is required',
+        }),
+    productId: Joi.string()
+        .guid({
+            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
+        })
+        .required()
+        .messages({
+            'string.guid': 'Invalid ID, must be a valid UUID',
+            'any.required': 'ID is required',
+        }),
     customerName: Joi.string().required().max(50).messages({
         'string.base': 'Customer name must be a string',
         'any.required': 'Customer name is required',

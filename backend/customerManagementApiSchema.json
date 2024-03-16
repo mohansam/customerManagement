@@ -123,7 +123,9 @@
                                         "type": "object",
                                         "properties": {
                                             "customerId": {
-                                                "type": "number"
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                                             },
                                             "customerName": {
                                                 "type": "string"
@@ -215,7 +217,9 @@
                                                 "type": "object",
                                                 "properties": {
                                                     "customerId": {
-                                                        "type": "integer"
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                                                     },
                                                     "customerName": {
                                                         "type": "string"
@@ -264,10 +268,9 @@
                         "required": true,
                         "description": "The unique identifier of the customer.",
                         "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 1,
-                            "description": "Must be a positive integer."
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                         }
                     }
                 ],
@@ -280,7 +283,9 @@
                                     "type": "object",
                                     "properties": {
                                         "customerId": {
-                                            "type": "integer"
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                                         },
                                         "customerName": {
                                             "type": "string"
@@ -348,10 +353,9 @@
                         "required": true,
                         "description": "The unique identifier of the customer to update.",
                         "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 1,
-                            "description": "Must be a positive integer."
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                         }
                     }
                 ],
@@ -389,7 +393,9 @@
                                     "type": "object",
                                     "properties": {
                                         "customerId": {
-                                            "type": "integer"
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                                         },
                                         "customerName": {
                                             "type": "string"
@@ -460,10 +466,9 @@
                                 ],
                                 "properties": {
                                     "customerId": {
-                                        "type": "integer",
-                                        "format": "int32",
-                                        "description": "Must be a positive integer.",
-                                        "minimum": 1
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                                     },
                                     "customerName": {
                                         "type": "string",
@@ -851,10 +856,9 @@
                                 ],
                                 "properties": {
                                     "customerId": {
-                                        "type": "integer",
-                                        "format": "int32",
-                                        "minimum": 1,
-                                        "description": "Must be a positive integer."
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                                     },
                                     "productName": {
                                         "type": "string",
@@ -917,6 +921,110 @@
                                         "message": {
                                             "type": "string",
                                             "example": "customer not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/getProductById/{productId}": {
+            "get": {
+                "summary": "Retrieve a product by their ID",
+                "tags": ["Product"],
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The unique identifier of the customer.",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Customer details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "productId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                        },
+                                        "customerId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                        },
+                                        "productName": {
+                                            "type": "string",
+                                            "maxLength": 100
+                                        },
+                                        "dateOfInstallation": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "description": "Must be in ISO 8601 format."
+                                        },
+                                        "warranty": {
+                                            "type": "string",
+                                            "maxLength": 100
+                                        },
+                                        "model": {
+                                            "type": "string",
+                                            "maxLength": 100
+                                        },
+                                        "pump": {
+                                            "type": "string",
+                                            "maxLength": 100
+                                        },
+                                        "membrane": {
+                                            "type": "string",
+                                            "maxLength": 100
+                                        },
+                                        "powerSupply": {
+                                            "type": "string",
+                                            "maxLength": 100
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product not found"
                                         }
                                     }
                                 }

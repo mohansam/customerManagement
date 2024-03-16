@@ -1,14 +1,15 @@
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const { sequelize } = require('../Db/dbClient');
 
 const Product = sequelize.define('product', {
     productId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv4(), // Automatically generate a UUID for new records
         primaryKey: true,
-        autoIncrement: true,
     },
     customerId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
     },
     productName: {

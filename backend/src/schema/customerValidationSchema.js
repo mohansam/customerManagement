@@ -29,12 +29,15 @@ const customerNameSchema = Joi.object({
 });
 
 const customerIdValidationSchema = Joi.object({
-    customerId: Joi.number().integer().positive().required().messages({
-        'number.base': 'Invalid ID, must be a number',
-        'number.integer': 'Invalid ID, must be an integer',
-        'number.positive': 'Invalid ID, must be a positive number',
-        'any.required': 'ID is required',
-    }),
+    customerId: Joi.string()
+        .guid({
+            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
+        })
+        .required()
+        .messages({
+            'string.guid': 'Invalid ID, must be a valid UUID',
+            'any.required': 'ID is required',
+        }),
 });
 
 const paginationSchema = Joi.object({

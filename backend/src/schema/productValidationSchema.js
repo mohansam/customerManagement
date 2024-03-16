@@ -1,12 +1,15 @@
 const Joi = require('joi');
 
 const productSchema = Joi.object({
-    customerId: Joi.number().integer().positive().required().messages({
-        'number.base': 'Invalid customer ID, must be a number',
-        'number.integer': 'Invalid customer ID, must be an integer',
-        'number.positive': 'Invalid customer ID, must be a positive number',
-        'any.required': 'Customer ID is required',
-    }),
+    customerId: Joi.string()
+        .guid({
+            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
+        })
+        .required()
+        .messages({
+            'string.guid': 'Invalid ID, must be a valid UUID',
+            'any.required': 'ID is required',
+        }),
     productName: Joi.string().max(100).required().messages({
         'string.base': 'Invalid product name, must be a string',
         'string.max': 'Product name must not exceed 1000 characters',
@@ -44,4 +47,16 @@ const productSchema = Joi.object({
     }),
 });
 
-module.exports = { productSchema };
+const productIdValidationSchema = Joi.object({
+    productId: Joi.string()
+        .guid({
+            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
+        })
+        .required()
+        .messages({
+            'string.guid': 'Invalid ID, must be a valid UUID',
+            'any.required': 'ID is required',
+        }),
+});
+
+module.exports = { productSchema, productIdValidationSchema };

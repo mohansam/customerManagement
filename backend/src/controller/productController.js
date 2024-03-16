@@ -2,7 +2,7 @@
 const { Product } = require('../model/productModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
-const { productSchema } = require('../schema/productValidationSchema');
+const { productSchema, productIdValidationSchema } = require('../schema/productValidationSchema');
 
 const createNewProduct = async (context) => {
     try {
@@ -12,6 +12,7 @@ const createNewProduct = async (context) => {
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
         await Product.create({
             productName,
+            customerId,
             dateOfInstallation,
             warranty,
             model,
@@ -26,4 +27,32 @@ const createNewProduct = async (context) => {
     }
 };
 
-module.exports = { createNewProduct: [validateInput(productSchema, 'body'), createNewProduct] };
+const getProductById = async (context) => {
+    try {
+        const { productId } = context.req.validatedData;
+        const product = await Product.findByPk(productId);
+        if (!product) return context.json({ message: 'Product not found' }, 404);
+        return context.json(
+            {
+                productId: product.productId,
+                productName: product.productName,
+                customerId: product.customerId,
+                dateOfInstallation: product.dateOfInstallation,
+                warranty: product.warranty,
+                model: product.model,
+                pump: product.pump,
+                membrane: product.membrane,
+                powerSupply: product.powerSupply,
+            },
+            200
+        );
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
+module.exports = {
+    createNewProduct: [validateInput(productSchema, 'body'), createNewProduct],
+    getProductById: [validateInput(productIdValidationSchema, 'params'), getProductById],
+};
