@@ -2,6 +2,7 @@
 const { Product } = require('../model/productModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
+const { customerIdValidationSchema } = require('../schema/customerValidationSchema');
 const { productSchema, productIdValidationSchema } = require('../schema/productValidationSchema');
 
 const createNewProduct = async (context) => {
@@ -52,7 +53,32 @@ const getProductById = async (context) => {
     }
 };
 
+const getProductsByCustomerId = async (context) => {
+    try {
+        const { customerId } = context.req.validatedData;
+        const products = await Product.findAll({
+            where: { customerId },
+        });
+        const productsData = products.map((product) => ({
+            productId: product.productId,
+            productName: product.productName,
+            customerId: product.customerId,
+            dateOfInstallation: product.dateOfInstallation,
+            warranty: product.warranty,
+            model: product.model,
+            pump: product.pump,
+            membrane: product.membrane,
+            powerSupply: product.powerSupply,
+        }));
+        return context.json(productsData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 module.exports = {
     createNewProduct: [validateInput(productSchema, 'body'), createNewProduct],
     getProductById: [validateInput(productIdValidationSchema, 'params'), getProductById],
+    getProductsByCustomerId: [validateInput(customerIdValidationSchema, 'params'), getProductsByCustomerId],
 };

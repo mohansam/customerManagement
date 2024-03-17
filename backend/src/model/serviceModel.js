@@ -14,10 +14,14 @@ const Service = sequelize.define('service', {
     },
     productId: {
         type: DataTypes.UUID,
-        allowNull: true,
+        allowNull: false,
     },
     serviceDate: {
         type: DataTypes.DATE,
+        allowNull: false,
+    },
+    serviceType: {
+        type: DataTypes.STRING, // Assuming parts replaced will be stored as a string, adjust as necessary
         allowNull: false,
     },
     isServiceCompleted: {
@@ -25,10 +29,17 @@ const Service = sequelize.define('service', {
         allowNull: false,
         defaultValue: false,
     },
-    isFreeService: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+    partsReplaced: {
+        type: DataTypes.STRING, // Assuming parts replaced will be stored as a string, adjust as necessary
+        allowNull: true,
+    },
+    amountCharged: {
+        type: DataTypes.DECIMAL, // Assuming amount charged is a decimal value, adjust as necessary
+        allowNull: true, // Assuming this can be null, adjust as necessary
+    },
+    customerRemarks: {
+        type: DataTypes.TEXT, // Assuming customer remarks will be stored as text, adjust as necessary
+        allowNull: true, // Assuming this can be null, adjust as necessary
     },
 });
 

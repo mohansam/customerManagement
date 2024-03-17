@@ -1,21 +1,37 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Resources:
-    MyLambdaFunction:
+    CustomerManagement:
         Type: 'AWS::Serverless::Function'
         Properties:
             Handler: index.handler
             Runtime: nodejs18.x
             CodeUri: src/
-            Description: A simple AWS Lambda function example.
-            MemorySize: 128
-            Timeout: 10
+            FunctionName: customerManagement-backend-api
+            Description: customer management backend api
+            MemorySize: 256
+            Timeout: 30
+            Layers:
+                - arn:aws:lambda:ap-south-1:823381142243:layer:customerManagement-backend-api-util-layer:1
             Environment:
                 Variables:
-                    LOG_LEVEL: 'INFO'
+                    FRONT_END_ORIGIN_URI: ''
+                    DATABASE_URL: ''
+            FunctionUrlConfig:
+                AuthType: NONE
 
-    MyLogGroup:
+    CustomerManagementLogGroup:
         Type: 'AWS::Logs::LogGroup'
         Properties:
-            LogGroupName: '/aws/lambda/my_lambda_function'
-            RetentionInDays: 14
+            LogGroupName: '/aws/lambda/customerManagement-backend-api'
+            RetentionInDays: 365
+
+    CustomerManagementLambdaLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: customerManagement-backend-api-util-layer
+            Description: customerManagement-backend-api
+            ContentUri: lambdaLayer/nodejs.zip
+            CompatibleRuntimes:
+                - nodejs18.x
+            RetentionPolicy: Retain

@@ -1,6 +1,4 @@
 {
-    "cSpell.words": [
-        "hono"
-    ],
-    "editor.autoIndent": "advanced"
+  "cSpell.words": ["hono", "openapi"],
+  "editor.autoIndent": "advanced"
 }

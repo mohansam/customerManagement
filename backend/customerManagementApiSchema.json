@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws/api/v1"
+            "url": "https://q2uqu4t2sh45oavlw23cd27ppi0mwygs.lambda-url.ap-south-1.on.aws/api/v1"
         }
     ],
     "paths": {
@@ -458,36 +458,56 @@
                                 "type": "object",
                                 "required": [
                                     "customerId",
-                                    "customerName",
+                                    "productId",
                                     "serviceDate",
-                                    "isServiceCompleted",
-                                    "productName",
-                                    "isFreeService"
+                                    "serviceType",
+                                    "isServiceCompleted"
                                 ],
                                 "properties": {
                                     "customerId": {
                                         "type": "string",
                                         "format": "uuid",
-                                        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                        "description": "Must be a valid UUID."
                                     },
-                                    "customerName": {
+                                    "productId": {
                                         "type": "string",
-                                        "maxLength": 50
+                                        "format": "uuid",
+                                        "description": "Must be a valid UUID."
                                     },
                                     "serviceDate": {
                                         "type": "string",
                                         "format": "date-time",
                                         "description": "Must be in ISO 8601 format."
                                     },
+                                    "serviceType": {
+                                        "type": "string",
+                                        "enum": [
+                                            "installation",
+                                            "service request",
+                                            "mandatory service",
+                                            "contract service",
+                                            "free service"
+                                        ],
+                                        "description": "Type of the service."
+                                    },
                                     "isServiceCompleted": {
                                         "type": "boolean"
                                     },
-                                    "productName": {
+                                    "partsReplaced": {
                                         "type": "string",
-                                        "maxLength": 100
+                                        "nullable": true,
+                                        "description": "Parts replaced during the service, can be empty."
                                     },
-                                    "isFreeService": {
-                                        "type": "boolean"
+                                    "amountCharged": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "nullable": true,
+                                        "description": "Amount charged for the service, can be null."
+                                    },
+                                    "customerRemarks": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "description": "Remarks from the customer, can be empty."
                                     }
                                 }
                             }
@@ -512,7 +532,7 @@
                         }
                     },
                     "404": {
-                        "description": "Customer not found",
+                        "description": "Customer or product not found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -520,7 +540,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Customer not found"
+                                            "example": "customer not found or product not found"
                                         }
                                     }
                                 }
@@ -561,32 +581,54 @@
                                         "type": "object",
                                         "properties": {
                                             "serviceId": {
-                                                "type": "integer",
-                                                "format": "int32",
-                                                "description": "Unique identifier of the service"
-                                            },
-                                            "customerName": {
                                                 "type": "string",
-                                                "maxLength": 50,
-                                                "description": "Name of the customer"
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
+                                            },
+                                            "customerId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
+                                            },
+                                            "productId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
                                             },
                                             "serviceDate": {
                                                 "type": "string",
                                                 "format": "date-time",
-                                                "description": "Scheduled date of the service"
+                                                "description": "Must be in ISO 8601 format."
+                                            },
+                                            "serviceType": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "installation",
+                                                    "service request",
+                                                    "mandatory service",
+                                                    "contract service",
+                                                    "free service"
+                                                ],
+                                                "description": "Type of the service."
                                             },
                                             "isServiceCompleted": {
-                                                "type": "boolean",
-                                                "description": "Whether the service has been completed"
+                                                "type": "boolean"
                                             },
-                                            "productName": {
+                                            "partsReplaced": {
                                                 "type": "string",
-                                                "maxLength": 100,
-                                                "description": "Name of the product for the service"
+                                                "nullable": true,
+                                                "description": "Parts replaced during the service, can be empty."
                                             },
-                                            "isFreeService": {
-                                                "type": "boolean",
-                                                "description": "Whether the service is provided for free"
+                                            "amountCharged": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "nullable": true,
+                                                "description": "Amount charged for the service, can be null."
+                                            },
+                                            "customerRemarks": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "description": "Remarks from the customer, can be empty."
                                             }
                                         }
                                     },
@@ -629,32 +671,54 @@
                                         "type": "object",
                                         "properties": {
                                             "serviceId": {
-                                                "type": "integer",
-                                                "format": "int32",
-                                                "description": "Unique identifier of the service"
-                                            },
-                                            "customerName": {
                                                 "type": "string",
-                                                "maxLength": 50,
-                                                "description": "Name of the customer"
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
+                                            },
+                                            "customerId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
+                                            },
+                                            "productId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
                                             },
                                             "serviceDate": {
                                                 "type": "string",
                                                 "format": "date-time",
-                                                "description": "Scheduled date of the service"
+                                                "description": "Must be in ISO 8601 format."
+                                            },
+                                            "serviceType": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "installation",
+                                                    "service request",
+                                                    "mandatory service",
+                                                    "contract service",
+                                                    "free service"
+                                                ],
+                                                "description": "Type of the service."
                                             },
                                             "isServiceCompleted": {
-                                                "type": "boolean",
-                                                "description": "Whether the service has been completed"
+                                                "type": "boolean"
                                             },
-                                            "productName": {
+                                            "partsReplaced": {
                                                 "type": "string",
-                                                "maxLength": 100,
-                                                "description": "Name of the product for the service"
+                                                "nullable": true,
+                                                "description": "Parts replaced during the service, can be empty."
                                             },
-                                            "isFreeService": {
-                                                "type": "boolean",
-                                                "description": "Whether the service is provided for free"
+                                            "amountCharged": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "nullable": true,
+                                                "description": "Amount charged for the service, can be null."
+                                            },
+                                            "customerRemarks": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "description": "Remarks from the customer, can be empty."
                                             }
                                         }
                                     },
@@ -693,10 +757,9 @@
                         "required": true,
                         "description": "The unique identifier of the service to mark as completed.",
                         "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 1,
-                            "description": "Must be a positive integer."
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                         }
                     }
                 ],
@@ -763,10 +826,9 @@
                         "required": true,
                         "description": "The unique identifier of the customer to update.",
                         "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "minimum": 1,
-                            "description": "Must be a positive integer."
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
                         }
                     }
                 ],
@@ -781,32 +843,54 @@
                                         "type": "object",
                                         "properties": {
                                             "serviceId": {
-                                                "type": "integer",
-                                                "format": "int32",
-                                                "description": "Unique identifier of the service"
-                                            },
-                                            "customerName": {
                                                 "type": "string",
-                                                "maxLength": 50,
-                                                "description": "Name of the customer"
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
+                                            },
+                                            "customerId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
+                                            },
+                                            "productId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Must be a valid UUID."
                                             },
                                             "serviceDate": {
                                                 "type": "string",
                                                 "format": "date-time",
-                                                "description": "Scheduled date of the service"
+                                                "description": "Must be in ISO 8601 format."
+                                            },
+                                            "serviceType": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "installation",
+                                                    "service request",
+                                                    "mandatory service",
+                                                    "contract service",
+                                                    "free service"
+                                                ],
+                                                "description": "Type of the service."
                                             },
                                             "isServiceCompleted": {
-                                                "type": "boolean",
-                                                "description": "Whether the service has been completed"
+                                                "type": "boolean"
                                             },
-                                            "productName": {
+                                            "partsReplaced": {
                                                 "type": "string",
-                                                "maxLength": 100,
-                                                "description": "Name of the product for the service"
+                                                "nullable": true,
+                                                "description": "Parts replaced during the service, can be empty."
                                             },
-                                            "isFreeService": {
-                                                "type": "boolean",
-                                                "description": "Whether the service is provided for free"
+                                            "amountCharged": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "nullable": true,
+                                                "description": "Amount charged for the service, can be null."
+                                            },
+                                            "customerRemarks": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "description": "Remarks from the customer, can be empty."
                                             }
                                         }
                                     },
@@ -895,7 +979,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "New product created successfully",
                         "content": {
                             "application/json": {
@@ -1027,6 +1111,98 @@
                                             "example": "Product not found"
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/getProductsByCustomerId/{customerId}": {
+            "get": {
+                "summary": "List all the products of the customer",
+                "tags": ["Product"],
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The unique identifier of the customer to update.",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of services belongs to customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "productId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                            },
+                                            "customerId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                            },
+                                            "productName": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "dateOfInstallation": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "Must be in ISO 8601 format."
+                                            },
+                                            "warranty": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "model": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "pump": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "membrane": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "powerSupply": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            }
+                                        }
+                                    },
+                                    "description": "An array of product objects."
                                 }
                             }
                         }

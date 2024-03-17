@@ -1,56 +1,56 @@
 const Joi = require('joi');
 
 const serviceSchema = Joi.object({
-    customerId: Joi.string()
-        .guid({
-            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
-        })
-        .required()
-        .messages({
-            'string.guid': 'Invalid ID, must be a valid UUID',
-            'any.required': 'ID is required',
-        }),
-    productId: Joi.string()
-        .guid({
-            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
-        })
-        .required()
-        .messages({
-            'string.guid': 'Invalid ID, must be a valid UUID',
-            'any.required': 'ID is required',
-        }),
-    customerName: Joi.string().required().max(50).messages({
-        'string.base': 'Customer name must be a string',
-        'any.required': 'Customer name is required',
-        'string.max': 'Customer name should not exceed {#limit} characters',
+    customerId: Joi.string().guid({ version: 'uuidv4' }).required().messages({
+        'string.guid': 'customerId must be a valid UUID',
+        'any.required': 'customerId is a required field',
+    }),
+    productId: Joi.string().guid({ version: 'uuidv4' }).required().messages({
+        'string.guid': 'productId must be a valid UUID',
+        'any.required': 'productId is a required field',
     }),
     serviceDate: Joi.date().iso().required().messages({
-        'date.base': 'Invalid service date, must be a valid date',
-        'date.format': 'Invalid service date format, must be in ISO 8601 format',
-        'any.required': 'Service date is required',
+        'date.base': 'Invalid dateOfInstallation date, must be a valid date',
+        'date.format': 'Invalid dateOfInstallation date format, must be in ISO 8601 format',
+        'any.required': 'dateOfInstallation value is required',
     }),
+    serviceType: Joi.string()
+        .valid('installation', 'service request', 'mandatory service', 'contract service', 'free service')
+        .required()
+        .messages({
+            'string.base': 'serviceType must be a string',
+            'any.only':
+                'serviceType must be one of installation, service request, mandatory service, contract service, free service',
+            'any.required': 'serviceType is a required field',
+        }),
     isServiceCompleted: Joi.boolean().required().messages({
-        'boolean.base': 'Invalid value for isServiceCompleted, must be a boolean',
-        'any.required': 'isServiceCompleted is required',
+        'boolean.base': 'isServiceCompleted must be a boolean',
+        'any.required': 'isServiceCompleted is a required field',
     }),
-    productName: Joi.string().max(100).required().messages({
-        'string.base': 'Invalid product name, must be a string',
-        'string.max': 'Product name must not exceed 1000 characters',
-        'any.required': 'Product name is required',
+    partsReplaced: Joi.string().allow('', null).messages({
+        'string.base': 'partsReplaced must be a string',
     }),
-    isFreeService: Joi.boolean().required().messages({
-        'boolean.base': 'Invalid value for isFreeService, must be a boolean',
-        'any.required': 'isFreeService is required',
+    amountCharged: Joi.number().precision(2).allow(null).messages({
+        'number.base': 'amountCharged must be a number',
+        'number.precision': 'amountCharged can have at most 2 decimal places',
     }),
+    customerRemarks: Joi.string().allow('', null).messages({
+        'string.base': 'customerRemarks must be a string',
+    }),
+}).messages({
+    'any.required': '{{#label}} is a required field',
 });
 
 const serviceIdValidationSchema = Joi.object({
-    serviceId: Joi.number().integer().positive().required().messages({
-        'number.base': 'Invalid ID, must be a number',
-        'number.integer': 'Invalid ID, must be an integer',
-        'number.positive': 'Invalid ID, must be a positive number',
-        'any.required': 'ID is required',
-    }),
+    serviceId: Joi.string()
+        .guid({
+            version: ['uuidv4'], // Optional: specify UUID version(s) to validate against
+        })
+        .required()
+        .messages({
+            'string.guid': 'Invalid ID, must be a valid UUID',
+            'any.required': 'ID is required',
+        }),
 });
 
 module.exports = { serviceSchema, serviceIdValidationSchema };

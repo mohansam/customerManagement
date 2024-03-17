@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const { Op } = require('sequelize');
 const { Service } = require('../model/serviceModel');
+const { Product } = require('../model/productModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
 const { serviceSchema, serviceIdValidationSchema } = require('../schema/serviceValidationSchema');
@@ -8,17 +9,31 @@ const { customerIdValidationSchema } = require('../schema/customerValidationSche
 
 const createNewService = async (context) => {
     try {
-        const { customerId, serviceDate, isServiceCompleted, productName, isFreeService, customerName } =
-            context.req.validatedData;
-        const customer = await Customer.findByPk(customerId);
-        if (!customer) return context.json({ message: 'Customer not found' }, 404);
-        await Service.create({
+        const {
             customerId,
-            customerName,
+            productId,
             serviceDate,
+            serviceType,
+            partsReplaced,
+            amountCharged,
+            customerRemarks,
             isServiceCompleted,
             productName,
-            isFreeService,
+        } = context.req.validatedData;
+        const customer = await Customer.findByPk(customerId);
+        if (!customer) return context.json({ message: 'Customer not found' }, 404);
+        const product = await Product.findByPk(productId);
+        if (!product) return context.json({ message: 'Product not found' }, 404);
+        await Service.create({
+            customerId,
+            productId,
+            serviceDate,
+            serviceType,
+            partsReplaced,
+            amountCharged,
+            customerRemarks,
+            isServiceCompleted,
+            productName,
         });
         return context.json({ message: 'new service created successfully' }, 201);
     } catch (err) {
@@ -67,11 +82,13 @@ const getPendingServices = async (context) => {
         const serviceData = pendingServices.map((pendingService) => ({
             serviceId: pendingService.serviceId,
             customerId: pendingService.customerId,
-            customerName: pendingService.customerName,
-            productName: pendingService.productName,
+            productId: pendingService.productId,
             serviceDate: pendingService.serviceDate,
+            serviceType: pendingService.serviceType,
             isServiceCompleted: pendingService.isServiceCompleted,
-            isFreeService: pendingService.isFreeService,
+            partsReplaced: pendingService.partsReplaced,
+            amountCharged: pendingService.amountCharged,
+            customerRemarks: pendingService.customerRemarks,
         }));
         return context.json(serviceData, 200);
     } catch (err) {
@@ -89,11 +106,13 @@ const getUpcomingServices = async (context) => {
         const serviceData = upComingServices.map((upComingService) => ({
             serviceId: upComingService.serviceId,
             customerId: upComingService.customerId,
-            customerName: upComingService.customerName,
-            productName: upComingService.productName,
+            productId: upComingService.productId,
             serviceDate: upComingService.serviceDate,
+            serviceType: upComingService.serviceType,
             isServiceCompleted: upComingService.isServiceCompleted,
-            isFreeService: upComingService.isFreeService,
+            partsReplaced: upComingService.partsReplaced,
+            amountCharged: upComingService.amountCharged,
+            customerRemarks: upComingService.customerRemarks,
         }));
         return context.json(serviceData, 200);
     } catch (err) {
@@ -111,11 +130,13 @@ const getAllTheServicesBelongsToCustomerId = async (context) => {
         const serviceData = services.map((upComingService) => ({
             serviceId: upComingService.serviceId,
             customerId: upComingService.customerId,
-            customerName: upComingService.customerName,
-            productName: upComingService.productName,
+            productId: upComingService.productId,
             serviceDate: upComingService.serviceDate,
+            serviceType: upComingService.serviceType,
             isServiceCompleted: upComingService.isServiceCompleted,
-            isFreeService: upComingService.isFreeService,
+            partsReplaced: upComingService.partsReplaced,
+            amountCharged: upComingService.amountCharged,
+            customerRemarks: upComingService.customerRemarks,
         }));
         return context.json(serviceData, 200);
     } catch (err) {
