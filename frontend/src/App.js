@@ -6,7 +6,7 @@ import CreateNewProductComponent from "./component/Product/CreateNewProductCompo
 import ProductToServiceWorkflow from "./pages/ProductToServiceWorkflow";
 import PendingServicesComponent from "./component/Service/PendingServicesComponent/PendingServicesComponent";
 import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent/UpcomingServicesComponent";
-
+import CheckCustomerDetails from "./pages/CheckCustomerDetails";
 import "./App.css";
 
 const App = () => {
@@ -34,6 +34,10 @@ const App = () => {
           <Route
             path="/upcoming-services"
             element={<UpcomingServicesComponent />}
+          />
+          <Route
+            path="/check-customer-details"
+            element={<CheckCustomerDetails />}
           />
           <Route path="/" element={<PendingServicesComponent />} />
         </Routes>

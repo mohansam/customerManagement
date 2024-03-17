@@ -45,6 +45,11 @@ const Navbar = () => {
               Upcoming Services
             </Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/check-customer-details">
+              Check Customer Details
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
