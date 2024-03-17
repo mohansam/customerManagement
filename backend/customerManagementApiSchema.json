@@ -162,6 +162,86 @@
                 }
             }
         },
+        "/customer/getCustomerByMobileNum": {
+            "get": {
+                "summary": "Retrieve customer by mobile num",
+                "tags": ["Customer"],
+                "parameters": [
+                    {
+                        "name": "customerMobileNum",
+                        "in": "query",
+                        "required": true,
+                        "description": "Customer mobile number to retrieve",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 10,
+                            "description": "Customer mobile number to retrieve"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of customers matching the mobile num or an empty list if no match is found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "customerId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                        },
+                                        "customerName": {
+                                            "type": "string"
+                                        },
+                                        "customerAddress": {
+                                            "type": "string"
+                                        },
+                                        "customerMobileNum": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "description": "customer objects"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Customer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Customer not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/customer/getAllTheCustomers": {
             "get": {
                 "summary": "Retrieve all customers with pagination",

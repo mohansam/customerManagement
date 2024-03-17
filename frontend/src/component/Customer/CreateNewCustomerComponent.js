@@ -1,47 +1,38 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SimpleModal from "./SimpleModal";
+import { createNewCustomer } from "../../services/CustomerService";
 import "./CreateNewCustomerComponent.css";
 
 const CreateNewCustomerComponent = () => {
-  const hostName =
-    "c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws";
   const navigate = useNavigate();
   const [customerData, setCustomerData] = useState({
     customerName: "",
     customerAddress: "",
     customerMobileNum: "",
   });
+  // States for handling modal visibility and message
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch(
-        `https://${hostName}/api/v1/customer/createNewCustomer`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(customerData),
-        }
-      );
-
-      if (response.ok) {
-        // Handle success or redirect to another page
-        navigate("/create-service");
-      } else {
-        console.error("Request failed");
-        // Handle error
-      }
-    } catch (error) {
-      console.error(error);
-      // Handle error
+    e.preventDefault();
+    if (!isFormValid()) {
+      setModalMessage("Please fill in all fields correctly.");
+      setIsModalOpen(true);
+      return;
     }
-  };
 
-  const handleChange = (e) => {
-    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
+    try {
+      await createNewCustomer(customerData); // Use the service function
+      navigate("/create-product");
+    } catch (error) {
+      console.log(error);
+      setModalMessage(error.message);
+      setIsModalOpen(true);
+    }
   };
 
   const isFormValid = () => {
@@ -49,8 +40,12 @@ const CreateNewCustomerComponent = () => {
     return (
       customerName.trim() !== "" &&
       customerAddress.trim() !== "" &&
-      customerMobileNum.trim() !== ""
+      /^[0-9]{10}$/.test(customerMobileNum) // Ensuring mobile number is 10 digits
     );
+  };
+
+  const handleChange = (e) => {
+    setCustomerData({ ...customerData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -103,6 +98,11 @@ const CreateNewCustomerComponent = () => {
           </button>
         </div>
       </form>
+      <SimpleModal
+        isOpen={isModalOpen}
+        message={modalMessage}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

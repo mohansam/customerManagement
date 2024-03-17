@@ -6,6 +6,7 @@ const {
     customerIdValidationSchema,
     customerNameSchema,
     paginationSchema,
+    customerMobileNumSchema,
 } = require('../schema/customerValidationSchema');
 
 const createNewCustomer = async (context) => {
@@ -49,6 +50,24 @@ const getCustomerByName = async (context) => {
             customerAddress: customer.customerAddress,
             customerMobileNum: customer.customerMobileNum,
         }));
+        return context.json(customerData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
+const getCustomerByMobileNum = async (context) => {
+    try {
+        const { customerMobileNum } = context.req.validatedData;
+        const customers = await Customer.findAll({ where: { customerMobileNum } });
+        if (customers.length === 0) return context.json({ message: 'Customer not found' }, 404);
+        const customerData = {
+            customerId: customers[0].customerId,
+            customerName: customers[0].customerName,
+            customerAddress: customers[0].customerAddress,
+            customerMobileNum: customers[0].customerMobileNum,
+        };
         return context.json(customerData, 200);
     } catch (err) {
         console.error(err);
@@ -112,6 +131,7 @@ module.exports = {
         updateCustomer,
     ],
     getCustomerByName: [validateInput(customerNameSchema, 'query'), getCustomerByName],
+    getCustomerByMobileNum: [validateInput(customerMobileNumSchema, 'query'), getCustomerByMobileNum],
     getCustomerById: [validateInput(customerIdValidationSchema, 'params'), getCustomerById],
     getAllTheCustomers: [validateInput(paginationSchema, 'query'), getAllTheCustomers],
 };

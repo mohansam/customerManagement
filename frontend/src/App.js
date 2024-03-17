@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./component/Navbar";
 import CreateNewCustomerComponent from "./component/Customer/CreateNewCustomerComponent";
+import CreateNewProductComponent from "./component/Product/CreateNewProductComponent";
 import CreateNewServiceComponent from "./component/Service/CreateNewServiceComponent/CreateNewServiceComponent";
 import PendingServicesComponent from "./component/Service/PendingServicesComponent/PendingServicesComponent";
 import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent/UpcomingServicesComponent";
@@ -17,6 +18,10 @@ const App = () => {
           <Route
             path="/create-customer"
             element={<CreateNewCustomerComponent />}
+          />
+          <Route
+            path="/create-product"
+            element={<CreateNewProductComponent />}
           />
           <Route
             path="/create-service"

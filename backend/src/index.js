@@ -15,7 +15,7 @@ const { FRONT_END_ORIGIN_URI } = process.env;
 app.use(
     '/api/v1/*',
     cors({
-        origin: [FRONT_END_ORIGIN_URI, 'https://editor-next.swagger.io'],
+        origin: [FRONT_END_ORIGIN_URI, 'https://editor-next.swagger.io', 'http://localhost:3000'],
     })
 );
 

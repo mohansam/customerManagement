@@ -1,0 +1,25 @@
+/* src/components/SimpleModal.css */
+
+.modal-background {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333; /* Dark background */
+  color: #fff; /* Light text color for contrast */
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  background-color: #0056b3;
+}

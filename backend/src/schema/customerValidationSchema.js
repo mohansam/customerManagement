@@ -28,6 +28,16 @@ const customerNameSchema = Joi.object({
     }),
 });
 
+const customerMobileNumSchema = Joi.object({
+    customerMobileNum: Joi.string()
+        .pattern(/^\d{10}$/)
+        .required()
+        .messages({
+            'string.pattern.base': 'Customer mobile number must be a 10-digit number.',
+            'any.required': 'Customer mobile number is required.',
+        }),
+});
+
 const customerIdValidationSchema = Joi.object({
     customerId: Joi.string()
         .guid({
@@ -54,4 +64,10 @@ const paginationSchema = Joi.object({
         .optional(), // Make this parameter optional
 });
 
-module.exports = { customerSchema, customerIdValidationSchema, customerNameSchema, paginationSchema };
+module.exports = {
+    customerSchema,
+    customerIdValidationSchema,
+    customerNameSchema,
+    paginationSchema,
+    customerMobileNumSchema,
+};
