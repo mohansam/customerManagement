@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { createNewProduct } from "../../services/ProductService";
 import { getCustomerByMobileNum } from "../../services/CustomerService";
+import "./FormStyles.css";
 import SimpleModal from "./SimpleModal"; // Assuming you have this component for showing error messages
 
 const CreateNewProductComponent = () => {
@@ -55,7 +56,7 @@ const CreateNewProductComponent = () => {
   };
 
   return (
-    <div>
+    <div className="form-container">
       {!customer ? (
         <form onSubmit={handleMobileNumSubmit}>
           <label>
@@ -70,7 +71,7 @@ const CreateNewProductComponent = () => {
         </form>
       ) : (
         <>
-          <p>Customer Selected: {customer.customerName}</p>
+          <h2>Create New Product</h2>
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="productName">Product Name:</label>
@@ -81,7 +82,6 @@ const CreateNewProductComponent = () => {
                 value={productData.productName}
                 onChange={handleInputChange}
                 required
-                maxLength={100} // Enforce the max length
               />
             </div>
             <div>
@@ -104,7 +104,6 @@ const CreateNewProductComponent = () => {
                 value={productData.warranty}
                 onChange={handleInputChange}
                 required
-                maxLength={100}
               />
             </div>
             <div>
@@ -116,7 +115,6 @@ const CreateNewProductComponent = () => {
                 value={productData.model}
                 onChange={handleInputChange}
                 required
-                maxLength={100}
               />
             </div>
             <div>
@@ -128,7 +126,6 @@ const CreateNewProductComponent = () => {
                 value={productData.pump}
                 onChange={handleInputChange}
                 required
-                maxLength={100}
               />
             </div>
             <div>
@@ -140,7 +137,6 @@ const CreateNewProductComponent = () => {
                 value={productData.membrane}
                 onChange={handleInputChange}
                 required
-                maxLength={100}
               />
             </div>
             <div>
@@ -152,7 +148,6 @@ const CreateNewProductComponent = () => {
                 value={productData.powerSupply}
                 onChange={handleInputChange}
                 required
-                maxLength={100}
               />
             </div>
             <button type="submit" disabled={!isFormValid()}>
