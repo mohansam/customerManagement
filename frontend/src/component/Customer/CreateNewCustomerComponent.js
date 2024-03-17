@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SimpleModal from "./SimpleModal";
 import { createNewCustomer } from "../../services/CustomerService";
+import LoaderModal from "../Loader/LoaderModal";
 import "./CreateNewCustomerComponent.css";
 
 const CreateNewCustomerComponent = () => {
@@ -15,8 +16,15 @@ const CreateNewCustomerComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false); // New loading state
+
+  if (isLoading) {
+    return <LoaderModal />; // Show loader when loading
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
 
     e.preventDefault();
     if (!isFormValid()) {
@@ -32,6 +40,8 @@ const CreateNewCustomerComponent = () => {
       console.log(error);
       setModalMessage(error.message);
       setIsModalOpen(true);
+    } finally {
+      setIsLoading(false); // Stop loading regardless of outcome
     }
   };
 

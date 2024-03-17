@@ -1,41 +1,37 @@
 /* PendingServicesComponent.css */
 
 .pending-services-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #202d3d;
-    /* Use your desired bluish dark color here */
-    color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #202d3d;
+  color: #fff;
 }
 
-.pending-services-container h2 {
-    margin-bottom: 20px;
+.services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-.pending-services-container table {
-    width: 100%;
-    border-collapse: collapse;
+.service-card {
+  background-color: hsl(0, 0%, 100%);
+  color: #333;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-.pending-services-container th,
-.pending-services-container td {
-    padding: 10px;
-    text-align: center;
+.service-card button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.pending-services-container th {
-    background-color: #333;
-    color: #fff;
-}
-
-.pending-services-container tr:nth-child(even) {
-    background-color: #4a5568;
-}
-
-.pending-services-container tr:hover {
-    background-color: #718096;
-    cursor: pointer;
+.service-card button:hover {
+  opacity: 0.8;
 }

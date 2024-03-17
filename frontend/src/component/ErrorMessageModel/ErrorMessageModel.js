@@ -1,9 +1,9 @@
 // src/components/SimpleModal.js
 
 import React from "react";
-import "./SimpleModal.css"; // Import the CSS file
+import "./ErrorMessageModel.css"; // Import the CSS file
 
-const SimpleModal = ({ isOpen, message, onClose }) => {
+const ErrorMessageModel = ({ isOpen, message, onClose }) => {
   if (!isOpen) return null;
 
   return (
@@ -16,4 +16,4 @@ const SimpleModal = ({ isOpen, message, onClose }) => {
   );
 };
 
-export default SimpleModal;
+export default ErrorMessageModel;

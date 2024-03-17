@@ -1,12 +1,13 @@
-// components/CreateNewProductComponent.js
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createNewProduct } from "../../services/ProductService";
 import { getCustomerByMobileNum } from "../../services/CustomerService";
 import "./FormStyles.css";
-import SimpleModal from "./SimpleModal"; // Assuming you have this component for showing error messages
+import LoaderModal from "../Loader/LoaderModal";
+import ErrorMessageModel from "../ErrorMessageModel/ErrorMessageModel"; // Assuming you have this component for showing error messages
 
 const CreateNewProductComponent = () => {
+  const navigate = useNavigate();
   const [mobileNum, setMobileNum] = useState("");
   const [customer, setCustomer] = useState(null);
   const [productData, setProductData] = useState({
@@ -21,9 +22,15 @@ const CreateNewProductComponent = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // New loading state
+
+  if (isLoading) {
+    return <LoaderModal />; // Show loader when loading
+  }
 
   const handleMobileNumSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
     try {
       const customerData = await getCustomerByMobileNum(mobileNum);
       setCustomer(customerData);
@@ -31,6 +38,8 @@ const CreateNewProductComponent = () => {
     } catch (error) {
       setModalMessage(error.message);
       setIsModalOpen(true);
+    } finally {
+      setIsLoading(false); // Stop loading regardless of outcome
     }
   };
 
@@ -40,13 +49,17 @@ const CreateNewProductComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
     try {
       const response = await createNewProduct(productData);
       console.log(response);
+      navigate("/create-service");
       // Handle successful product creation, e.g., navigate to a confirmation page or reset form
     } catch (error) {
       setModalMessage(error.message);
       setIsModalOpen(true);
+    } finally {
+      setIsLoading(false); // Stop loading regardless of outcome
     }
   };
 
@@ -71,6 +84,7 @@ const CreateNewProductComponent = () => {
         </form>
       ) : (
         <>
+          <p>Customer Selected: {customer.customerName}</p>
           <h2>Create New Product</h2>
           <form onSubmit={handleSubmit}>
             <div>
@@ -150,13 +164,17 @@ const CreateNewProductComponent = () => {
                 required
               />
             </div>
-            <button type="submit" disabled={!isFormValid()}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={!isFormValid()}
+            >
               Create Product
             </button>
           </form>
         </>
       )}
-      <SimpleModal
+      <ErrorMessageModel
         isOpen={isModalOpen}
         message={modalMessage}
         onClose={() => setIsModalOpen(false)}

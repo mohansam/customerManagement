@@ -1,95 +1,100 @@
 import React, { useEffect, useState } from "react";
+import {
+  getUpcomingServices,
+  markServiceAsCompleted,
+} from "../../../services/ServiceService";
+import LoaderModal from "../../Loader/LoaderModal";
+import ErrorMessageModel from "../../ErrorMessageModel/ErrorMessageModel";
+import DetailsModal from "../../DetailsModal/DetailsModal";
 import "./UpcomingServicesComponent.css";
 
 const UpcomingServicesComponent = () => {
-  const hostName =
-    "c5vivyjwsori5w5eenemb7yiuy0jzzek.lambda-url.ap-south-1.on.aws";
-  const [upcomingServices, setUpcomingServices] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [pendingServices, setPendingServices] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const [selectedService, setSelectedService] = useState(null);
+
+  const handleServiceSelect = (service) => {
+    setSelectedService(service);
+  };
 
   useEffect(() => {
-    fetch(`https://${hostName}/api/v1/service/getUpcomingServices`)
-      .then((response) => response.json())
-      .then((data) => {
-        setUpcomingServices(data);
+    setIsLoading(true);
+    const fetchPendingServices = async () => {
+      try {
+        const services = await getUpcomingServices();
+        setPendingServices(services);
+      } catch (error) {
+        console.error("Failed to load upcoming services:", error);
+        setModalMessage(error.message);
+        setIsModalOpen(true);
+      } finally {
         setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false);
-        // Handle error
-      });
+      }
+    };
+
+    fetchPendingServices();
   }, []);
 
-  const markServiceAsCompleted = (serviceId) => {
+  const handleMarkAsCompleted = async (serviceId) => {
     setIsLoading(true);
-    // Make API call to mark service as completed
-    fetch(
-      `https://${hostName}/api/v1/service/markServiceAsCompletedByServiceId/${serviceId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Service marked as completed:", data);
-        // Remove the completed service from pending services
-        setUpcomingServices((prevServices) =>
-          prevServices.filter((service) => service.serviceId !== serviceId)
-        );
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false);
-        // Handle error
-      });
+    try {
+      await markServiceAsCompleted(serviceId);
+      setPendingServices((prev) =>
+        prev.filter((service) => service.serviceId !== serviceId)
+      );
+    } catch (error) {
+      console.error("Error marking service as completed:", error);
+      setModalMessage(error.message);
+      setIsModalOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return <LoaderModal />;
+  }
 
   return (
     <div className="pending-services-container">
       <h2>Upcoming Services</h2>
-      {isLoading ? (
-        <div className="loader">Loading...</div>
+      {pendingServices.length > 0 ? (
+        <div className="services-grid">
+          {pendingServices.map((service) => (
+            <div
+              className="service-card"
+              key={service.serviceId}
+              onClick={() => handleServiceSelect(service)}
+            >
+              <h3>{service.productName}</h3>
+              <p>ServiceDate: {service.serviceDate}</p>
+              <p>ServiceType: {service.serviceType}</p>
+              <p>IsServiceCompleted: {service.isServiceCompleted.toString()}</p>
+              <p>PartsReplaced: {service.partsReplaced}</p>
+              <p>AmountCharged: {service.amountCharged}</p>
+              <p>CustomerRemarks: {service.customerRemarks}</p>
+              <button onClick={() => handleMarkAsCompleted(service.serviceId)}>
+                Mark as Completed
+              </button>
+            </div>
+          ))}
+        </div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Service ID</th>
-              <th>Customer ID</th>
-              <th>Customer Name</th>
-              <th>Service Date</th>
-              <th>Is Service Completed</th>
-              <th>Product Name</th>
-              <th>Is Free Service</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {upcomingServices.map((service) => (
-              <tr key={service.serviceId}>
-                <td>{service.serviceId}</td>
-                <td>{service.customerId}</td>
-                <td>{service.customerName}</td>
-                <td>{service.serviceDate}</td>
-                <td>{service.isServiceCompleted ? "Yes" : "No"}</td>
-                <td>{service.productName}</td>
-                <td>{service.isFreeService ? "Yes" : "No"}</td>
-                <td>
-                  <button
-                    type="button"
-                    onClick={() => markServiceAsCompleted(service.serviceId)}
-                  >
-                    Mark as Completed
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        !isModalOpen && <p>No pending services available.</p>
+      )}
+      <ErrorMessageModel
+        isOpen={isModalOpen}
+        message={modalMessage}
+        onClose={() => setIsModalOpen(false)}
+      />
+      {selectedService && (
+        <DetailsModal
+          serviceObject={selectedService}
+          onClose={() => setSelectedService(null)}
+        />
       )}
     </div>
   );

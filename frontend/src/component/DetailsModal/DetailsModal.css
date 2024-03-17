@@ -1,0 +1,43 @@
+/* DetailsModal.css */
+.details-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Ensure it's above everything else */
+}
+
+.details-modal-content {
+  background-color: #102058a8;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px; /* Adjust the width as needed */
+  z-index: 1051; /* Above the backdrop */
+}
+
+.details-modal-content p,
+.details-modal-content h2 {
+  margin: 10px 0;
+}
+
+.details-modal-content button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.details-modal-content button:hover {
+  background-color: #0056b3;
+}

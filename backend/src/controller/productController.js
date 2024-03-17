@@ -2,7 +2,7 @@
 const { Product } = require('../model/productModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
-const { customerIdValidationSchema } = require('../schema/customerValidationSchema');
+const { customerIdValidationSchema, customerMobileNumSchema } = require('../schema/customerValidationSchema');
 const { productSchema, productIdValidationSchema } = require('../schema/productValidationSchema');
 
 const createNewProduct = async (context) => {
@@ -77,8 +77,35 @@ const getProductsByCustomerId = async (context) => {
     }
 };
 
+const getProductsByCustomerMobileNum = async (context) => {
+    try {
+        const { customerMobileNum } = context.req.validatedData;
+        const customers = await Customer.findAll({ where: { customerMobileNum } });
+        if (customers.length === 0) return context.json({ message: 'Customer not found' }, 404);
+        const products = await Product.findAll({
+            where: { customerId: customers[0].customerId },
+        });
+        const productsData = products.map((product) => ({
+            productId: product.productId,
+            productName: product.productName,
+            customerId: product.customerId,
+            dateOfInstallation: product.dateOfInstallation,
+            warranty: product.warranty,
+            model: product.model,
+            pump: product.pump,
+            membrane: product.membrane,
+            powerSupply: product.powerSupply,
+        }));
+        return context.json(productsData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 module.exports = {
     createNewProduct: [validateInput(productSchema, 'body'), createNewProduct],
     getProductById: [validateInput(productIdValidationSchema, 'params'), getProductById],
     getProductsByCustomerId: [validateInput(customerIdValidationSchema, 'params'), getProductsByCustomerId],
+    getProductsByCustomerMobileNum: [validateInput(customerMobileNumSchema, 'query'), getProductsByCustomerMobileNum],
 };

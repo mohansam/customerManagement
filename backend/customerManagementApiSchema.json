@@ -1305,6 +1305,98 @@
                     }
                 }
             }
+        },
+        "/product/getProductsByCustomerMobileNum": {
+            "get": {
+                "summary": "List all the products of the customer",
+                "tags": ["Product"],
+                "parameters": [
+                    {
+                        "name": "customerMobileNum",
+                        "in": "query",
+                        "required": true,
+                        "description": "Customer mobile number to retrieve",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 10,
+                            "description": "Customer mobile number to retrieve"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of services belongs to customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "productId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                            },
+                                            "customerId": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89ABab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+                                            },
+                                            "productName": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "dateOfInstallation": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "Must be in ISO 8601 format."
+                                            },
+                                            "warranty": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "model": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "pump": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "membrane": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            },
+                                            "powerSupply": {
+                                                "type": "string",
+                                                "maxLength": 100
+                                            }
+                                        }
+                                    },
+                                    "description": "An array of product objects."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

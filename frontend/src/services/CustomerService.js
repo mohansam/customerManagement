@@ -38,3 +38,19 @@ export const getCustomerByMobileNum = async (customerMobileNum) => {
     throw error;
   }
 };
+
+export const getCustomerById = async (customerId) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/customer/getCustomerById/${customerId}`
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An unknown error occurred");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching customer by mobile number:", error);
+    throw error;
+  }
+};
