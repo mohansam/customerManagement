@@ -38,7 +38,8 @@ const UpcomingServicesComponent = () => {
     fetchPendingServices();
   }, []);
 
-  const handleMarkAsCompleted = async (serviceId) => {
+  const handleMarkAsCompleted = async (event, serviceId) => {
+    event.stopPropagation(); // Stop the event from bubbling up to the parent
     setIsLoading(true);
     try {
       await markServiceAsCompleted(serviceId);
@@ -76,7 +77,11 @@ const UpcomingServicesComponent = () => {
               <p>PartsReplaced: {service.partsReplaced}</p>
               <p>AmountCharged: {service.amountCharged}</p>
               <p>CustomerRemarks: {service.customerRemarks}</p>
-              <button onClick={() => handleMarkAsCompleted(service.serviceId)}>
+              <button
+                onClick={(event) =>
+                  handleMarkAsCompleted(event, service.serviceId)
+                }
+              >
                 Mark as Completed
               </button>
             </div>
