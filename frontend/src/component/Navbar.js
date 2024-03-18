@@ -1,55 +1,92 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom"; // Import NavLink
 
 const Navbar = () => {
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+  const closeNav = () => setIsNavCollapsed(true);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">
+      <NavLink className="navbar-brand" to="/" onClick={closeNav}>
         Customer Management
-      </Link>
+      </NavLink>
       <button
         className="navbar-toggler"
         type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
+        onClick={handleNavCollapse}
         aria-controls="navbarNav"
-        aria-expanded="false"
+        aria-expanded={!isNavCollapsed}
         aria-label="Toggle navigation"
       >
         <span className="navbar-toggler-icon"></span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
+      <div
+        className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse`}
+        id="navbarNav"
+      >
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
-            <Link className="nav-link" to="/create-customer">
+            <NavLink
+              className="nav-link"
+              to="/create-customer"
+              onClick={closeNav}
+              activeClassName="active"
+            >
               Create New Customer
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/create-product">
+            <NavLink
+              className="nav-link"
+              to="/create-product"
+              onClick={closeNav}
+              activeClassName="active"
+            >
               Create New Product
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/create-service">
+            <NavLink
+              className="nav-link"
+              to="/create-service"
+              onClick={closeNav}
+              activeClassName="active"
+            >
               Create New Service
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/pending-services">
+            <NavLink
+              className="nav-link"
+              to="/pending-services"
+              onClick={closeNav}
+              activeClassName="active"
+            >
               Pending Services
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/upcoming-services">
+            <NavLink
+              className="nav-link"
+              to="/upcoming-services"
+              onClick={closeNav}
+              activeClassName="active"
+            >
               Upcoming Services
-            </Link>
+            </NavLink>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/check-customer-details">
+          {/* <li className="nav-item">
+            <NavLink
+              className="nav-link"
+              to="/check-customer-details"
+              onClick={closeNav}
+              activeClassName="active"
+            >
               Check Customer Details
-            </Link>
-          </li>
+            </NavLink>
+          </li> */}
         </ul>
       </div>
     </nav>

@@ -4,11 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
   background-color: #202d3d;
-  /* Use your desired bluish dark color here */
   color: #fff;
+  min-height: 100vh;
 }
 
 .pending-services-container h2 {

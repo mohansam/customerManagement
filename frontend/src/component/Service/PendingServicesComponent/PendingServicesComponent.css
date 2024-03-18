@@ -21,6 +21,12 @@
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s; /* Smooth transform effect on hover */
+}
+
+.service-card:hover {
+  transform: scale(1.06); /* Slightly enlarge items on hover */
 }
 
 .service-card button {
