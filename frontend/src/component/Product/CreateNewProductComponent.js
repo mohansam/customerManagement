@@ -72,6 +72,7 @@ const CreateNewProductComponent = () => {
     <div className="form-container">
       {!customer ? (
         <form onSubmit={handleMobileNumSubmit}>
+          <h2>Create New Product</h2>
           <label>
             Enter Customer's Mobile Number:
             <input

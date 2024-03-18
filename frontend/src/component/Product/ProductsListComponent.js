@@ -43,6 +43,7 @@ const ProductsListComponent = ({ onSelectProduct }) => {
 
   return (
     <div className="product-list-container">
+      <h2>Create New Service</h2>
       <input
         type="text"
         placeholder="Enter customer's mobile number"
