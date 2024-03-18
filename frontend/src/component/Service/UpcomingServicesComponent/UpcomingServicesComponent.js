@@ -88,7 +88,7 @@ const UpcomingServicesComponent = () => {
           ))}
         </div>
       ) : (
-        !isModalOpen && <p>No pending services available.</p>
+        !isModalOpen && <p>No upcoming services available.</p>
       )}
       <ErrorMessageModel
         isOpen={isModalOpen}
