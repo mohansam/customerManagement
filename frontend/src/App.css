@@ -56,7 +56,6 @@ body.dark-mode .navbar-nav .nav-link {
   gap: 10px;
   justify-content: center;
   align-items: flex-start;
-  min-height: 100vh;
 }
 
 .card-item {
