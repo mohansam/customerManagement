@@ -33,7 +33,7 @@ const ServicesComponent = ({ serviceType, serviceFetcher }) => {
     };
 
     fetchPendingServices();
-  }, []);
+  }, [serviceFetcher]);
 
   const handleMarkAsCompleted = async (event, serviceId) => {
     event.stopPropagation(); // Stop the event from bubbling up to the parent
