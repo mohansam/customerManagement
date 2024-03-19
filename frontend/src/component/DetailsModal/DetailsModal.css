@@ -5,31 +5,24 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(13, 73, 121, 0.662);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* Ensure it's above everything else */
+  background-color: #b8acac90; /* Fully opaque */
 }
 
 .details-modal-content {
-  background-color: #102058a8;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: normal;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 600px; /* Adjust the width as needed */
-  z-index: 1051; /* Above the backdrop */
-}
-
-.details-modal-content p,
-.details-modal-content h2 {
-  margin: 10px 0;
+  box-shadow: 0 4px 6px rgba(161, 115, 115, 0.1);
+  gap: 5px;
 }
 
 .details-modal-content button {
-  display: block;
-  margin: 20px auto;
+  margin: 5px auto;
   padding: 10px 20px;
   background-color: #007bff;
   color: white;

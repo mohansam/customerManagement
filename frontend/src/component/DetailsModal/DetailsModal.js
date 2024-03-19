@@ -3,6 +3,8 @@ import { getCustomerById } from "../../services/CustomerService";
 import { getProductById } from "../../services/ProductService";
 import LoaderModal from "../Loader/LoaderModal";
 import ErrorMessageModel from "../ErrorMessageModel/ErrorMessageModel";
+import ProductCard from "../Product/ProductCard";
+import CustomerCard from "../Customer/CustomerCard";
 import "./DetailsModal.css";
 
 const DetailsModal = ({ serviceObject, onClose }) => {
@@ -42,26 +44,14 @@ const DetailsModal = ({ serviceObject, onClose }) => {
   return (
     <div className="details-modal-backdrop">
       <div className="details-modal-content">
-        <h2>Service Details</h2>
         {userDetails && (
           <>
-            <p>User Name: {userDetails.customerName}</p>
-            <p>Address: {userDetails.customerAddress}</p>
-            <p>Mobile: {userDetails.customerMobileNum}</p>
+            <CustomerCard customer={userDetails} />
           </>
         )}
         {productDetails && (
           <>
-            <p>Product Name: {productDetails.productName}</p>
-            <p>
-              Date of Installation:{" "}
-              {new Date(productDetails.dateOfInstallation).toLocaleDateString()}
-            </p>
-            <p>Warranty: {productDetails.warranty}</p>
-            <p>Model: {productDetails.model}</p>
-            <p>Pump: {productDetails.pump}</p>
-            <p>Membrane: {productDetails.membrane}</p>
-            <p>Power Supply: {productDetails.powerSupply}</p>
+            <ProductCard product={productDetails} />
           </>
         )}
         <button onClick={onClose}>Close</button>
