@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import ProductsListComponent from "../component/Product/ProductsListComponent"; // Adjust the path as necessary
-import CreateNewServiceComponent from "../component/Service/CreateNewServiceComponent/CreateNewServiceComponent";
+import ProductsListComponent from "../component/Product/ProductsListComponent";
+import CreateNewServiceComponent from "../component/Service/CreateNewServiceComponent";
 
 const ProductToServiceWorkflow = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Handler to be called when a product is selected from the list
   const handleSelectProduct = (product) => {
     setSelectedProduct(product);
   };

@@ -4,6 +4,7 @@ import Navbar from "./component/Navbar";
 import CreateNewCustomerComponent from "./component/Customer/CreateNewCustomerComponent";
 import CreateNewProductComponent from "./component/Product/CreateNewProductComponent";
 import ProductToServiceWorkflow from "./pages/ProductToServiceWorkflow";
+import CustomerToProductWorkflow from "./pages/CustomerToProductWorkflow";
 import PendingServicesComponent from "./component/Service/PendingServicesComponent/PendingServicesComponent";
 import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent/UpcomingServicesComponent";
 // import CheckCustomerDetails from "./pages/CheckCustomerDetails";
@@ -21,7 +22,7 @@ const App = () => {
           />
           <Route
             path="/create-product"
-            element={<CreateNewProductComponent />}
+            element={<CustomerToProductWorkflow />}
           />
           <Route
             path="/create-service"

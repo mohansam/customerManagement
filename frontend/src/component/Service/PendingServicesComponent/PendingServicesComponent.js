@@ -60,13 +60,13 @@ const PendingServicesComponent = () => {
   }
 
   return (
-    <div className="pending-services-container">
+    <div className="container">
       <h2>Pending Services</h2>
       {pendingServices.length > 0 ? (
-        <div className="services-grid">
+        <div className="card-item-list">
           {pendingServices.map((service) => (
             <div
-              className="service-card"
+              className="card-item"
               key={service.serviceId}
               onClick={() => handleServiceSelect(service)}
             >

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import SimpleModal from "./SimpleModal";
+import { useNavigate } from "react-router-dom";
+import ErrorMessageModel from "../ErrorMessageModel/ErrorMessageModel";
 import { createNewCustomer } from "../../services/CustomerService";
 import LoaderModal from "../Loader/LoaderModal";
-import "./CreateNewCustomerComponent.css";
 
 const CreateNewCustomerComponent = () => {
   const navigate = useNavigate();
@@ -12,19 +11,18 @@ const CreateNewCustomerComponent = () => {
     customerAddress: "",
     customerMobileNum: "",
   });
-  // States for handling modal visibility and message
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   if (isLoading) {
-    return <LoaderModal />; // Show loader when loading
+    return <LoaderModal />;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
 
     e.preventDefault();
     if (!isFormValid()) {
@@ -34,14 +32,14 @@ const CreateNewCustomerComponent = () => {
     }
 
     try {
-      await createNewCustomer(customerData); // Use the service function
+      await createNewCustomer(customerData);
       navigate("/create-product");
     } catch (error) {
       console.log(error);
       setModalMessage(error.message);
       setIsModalOpen(true);
     } finally {
-      setIsLoading(false); // Stop loading regardless of outcome
+      setIsLoading(false);
     }
   };
 
@@ -50,7 +48,7 @@ const CreateNewCustomerComponent = () => {
     return (
       customerName.trim() !== "" &&
       customerAddress.trim() !== "" &&
-      /^[0-9]{10}$/.test(customerMobileNum) // Ensuring mobile number is 10 digits
+      /^[0-9]{10}$/.test(customerMobileNum)
     );
   };
 
@@ -59,56 +57,52 @@ const CreateNewCustomerComponent = () => {
   };
 
   return (
-    <div className="create-customer-container">
-      <Link to="/" className="create-customer-back-link">
-        &lt; Back to Home
-      </Link>
+    <div className="container">
       <h2>Create New Customer</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="customerName">Name:</label>
-          <input
-            type="text"
-            id="customerName"
-            name="customerName"
-            value={customerData.customerName}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="customerAddress">Address:</label>
-          <input
-            type="text"
-            id="customerAddress"
-            name="customerAddress"
-            value={customerData.customerAddress}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="customerMobileNum">Mobile Number:</label>
-          <input
-            type="text"
-            id="customerMobileNum"
-            name="customerMobileNum"
-            value={customerData.customerMobileNum}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <Link to="/" className="btn btn-secondary">
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={!isFormValid()}
-          >
-            Create Customer
-          </button>
-        </div>
-      </form>
-      <SimpleModal
+      <div className="form-container">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="customerName">Name:</label>
+            <input
+              type="text"
+              id="customerName"
+              name="customerName"
+              value={customerData.customerName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="customerAddress">Address:</label>
+            <input
+              type="text"
+              id="customerAddress"
+              name="customerAddress"
+              value={customerData.customerAddress}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="customerMobileNum">Mobile Number:</label>
+            <input
+              type="text"
+              id="customerMobileNum"
+              name="customerMobileNum"
+              value={customerData.customerMobileNum}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={!isFormValid()}
+            >
+              Create Customer
+            </button>
+          </div>
+        </form>
+      </div>
+      <ErrorMessageModel
         isOpen={isModalOpen}
         message={modalMessage}
         onClose={() => setIsModalOpen(false)}

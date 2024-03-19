@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getProductsByCustomerMobileNum } from "../../services/ProductService";
 import LoaderModal from "../Loader/LoaderModal";
-import "./ProductListStyle.css"; // Adjust this path as necessary
+import ProductCard from "./ProductCard";
 
 const ProductsListComponent = ({ onSelectProduct }) => {
   const [mobileNum, setMobileNum] = useState("");
@@ -10,7 +10,7 @@ const ProductsListComponent = ({ onSelectProduct }) => {
   const [error, setError] = useState("");
 
   if (isLoading) {
-    return <LoaderModal />; // Show loader when loading
+    return <LoaderModal />;
   }
 
   const handleMobileNumChange = (e) => {
@@ -42,7 +42,7 @@ const ProductsListComponent = ({ onSelectProduct }) => {
   };
 
   return (
-    <div className="product-list-container">
+    <div className="container">
       <h2>Create New Service</h2>
       <input
         type="text"
@@ -56,26 +56,13 @@ const ProductsListComponent = ({ onSelectProduct }) => {
         disabled={isLoading}
         className="form-button"
       >
-        {isLoading ? "Loading..." : "Fetch Products"}
+        Fetch Products
       </button>
       {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
-      <div>
+      <div className="card-item-list">
         {products.map((product) => (
-          <div
-            key={product.productId}
-            onClick={() => onSelectProduct(product)}
-            className="product-item"
-          >
-            <h3>{product.productName}</h3>
-            <p>Model: {product.model}</p>
-            <p>Membrane: {product.membrane}</p>
-            <p>Pump: {product.pump}</p>
-            <p>Power Supply: {product.powerSupply}</p>
-            <p>
-              Date of Installation:{" "}
-              {new Date(product.dateOfInstallation).toLocaleDateString()}
-            </p>
-            <p>Warranty: {product.warranty}</p>
+          <div key={product.productId} onClick={() => onSelectProduct(product)}>
+            <ProductCard product={product} />
           </div>
         ))}
       </div>

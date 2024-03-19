@@ -6,7 +6,6 @@ import {
 import LoaderModal from "../../Loader/LoaderModal";
 import ErrorMessageModel from "../../ErrorMessageModel/ErrorMessageModel";
 import DetailsModal from "../../DetailsModal/DetailsModal";
-import "./UpcomingServicesComponent.css";
 
 const UpcomingServicesComponent = () => {
   const [pendingServices, setPendingServices] = useState([]);
@@ -39,7 +38,7 @@ const UpcomingServicesComponent = () => {
   }, []);
 
   const handleMarkAsCompleted = async (event, serviceId) => {
-    event.stopPropagation(); // Stop the event from bubbling up to the parent
+    event.stopPropagation();
     setIsLoading(true);
     try {
       await markServiceAsCompleted(serviceId);
@@ -60,13 +59,13 @@ const UpcomingServicesComponent = () => {
   }
 
   return (
-    <div className="pending-services-container">
+    <div className="container">
       <h2>Upcoming Services</h2>
       {pendingServices.length > 0 ? (
-        <div className="services-grid">
+        <div className="card-item-list">
           {pendingServices.map((service) => (
             <div
-              className="service-card"
+              className="card-item"
               key={service.serviceId}
               onClick={() => handleServiceSelect(service)}
             >

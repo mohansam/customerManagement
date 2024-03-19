@@ -1,5 +1,5 @@
-.container {
-  margin-top: 20px;
+body {
+  background-color: #202d3d;
 }
 
 .navbar {
@@ -36,4 +36,90 @@ body.dark-mode .navbar-brand {
 
 body.dark-mode .navbar-nav .nav-link {
   color: #333;
+}
+
+/* container and card style */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background-color: #202d3d;
+  color: #ffffff;
+  gap: 10px;
+}
+
+.card-item-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+}
+
+.card-item {
+  background-color: #2e3e4f;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card-item:hover {
+  transform: scale(1.06);
+}
+
+.card-item h3,
+.card-item p {
+  margin: 5px 0;
+}
+
+.card-item button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 50px;
+}
+
+.card-item button:hover {
+  opacity: 0.8;
+}
+/* end of container */
+
+/* FormStyles.css */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #202d3d;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.form-container form {
+  width: 300px;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-container select,
+.form-container input {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.form-container button {
+  background-color: #fff;
+  color: #333;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
 }
