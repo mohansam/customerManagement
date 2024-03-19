@@ -2,11 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./component/Navbar";
 import CreateNewCustomerComponent from "./component/Customer/CreateNewCustomerComponent";
-import CreateNewProductComponent from "./component/Product/CreateNewProductComponent";
 import ProductToServiceWorkflow from "./pages/ProductToServiceWorkflow";
 import CustomerToProductWorkflow from "./pages/CustomerToProductWorkflow";
-import PendingServicesComponent from "./component/Service/PendingServicesComponent/PendingServicesComponent";
-import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent/UpcomingServicesComponent";
+import PendingServicesComponent from "./component/Service/PendingServicesComponent";
+import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent";
 // import CheckCustomerDetails from "./pages/CheckCustomerDetails";
 import "./App.css";
 

@@ -139,6 +139,16 @@ const CreateNewServiceComponent = ({ selectedProduct }) => {
               placeholder="Enter amount or leave blank"
             />
           </div>
+          <div>
+            <label htmlFor="serviceEngineer">serviceEngineer:</label>
+            <input
+              type="text"
+              id="serviceEngineer"
+              name="serviceEngineer"
+              value={serviceData.serviceEngineer}
+              onChange={handleChange}
+            />
+          </div>
           <button
             type="submit"
             className="btn btn-primary"

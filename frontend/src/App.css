@@ -55,7 +55,7 @@ body.dark-mode .navbar-nav .nav-link {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   min-height: 100vh;
 }
 
@@ -83,7 +83,6 @@ body.dark-mode .navbar-nav .nav-link {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 50px;
 }
 
 .card-item button:hover {
@@ -114,6 +113,7 @@ body.dark-mode .navbar-nav .nav-link {
 .form-container input {
   width: 100%;
   margin-bottom: 5px;
+  padding: 5px;
 }
 
 .form-container button {

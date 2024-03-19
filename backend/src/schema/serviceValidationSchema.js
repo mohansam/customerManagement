@@ -37,6 +37,11 @@ const serviceSchema = Joi.object({
     customerRemarks: Joi.string().allow('', null).messages({
         'string.base': 'customerRemarks must be a string',
     }),
+    serviceEngineer: Joi.string().required().max(50).messages({
+        'string.base': 'Customer name must be a string',
+        'any.required': 'Customer name is required',
+        'string.max': 'Customer name should not exceed {#limit} characters',
+    }),
 }).messages({
     'any.required': '{{#label}} is a required field',
 });

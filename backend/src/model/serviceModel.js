@@ -21,7 +21,7 @@ const Service = sequelize.define('service', {
         allowNull: false,
     },
     serviceType: {
-        type: DataTypes.STRING, // Assuming parts replaced will be stored as a string, adjust as necessary
+        type: DataTypes.STRING,
         allowNull: false,
     },
     isServiceCompleted: {
@@ -30,16 +30,20 @@ const Service = sequelize.define('service', {
         defaultValue: false,
     },
     partsReplaced: {
-        type: DataTypes.STRING, // Assuming parts replaced will be stored as a string, adjust as necessary
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    serviceEngineer: {
+        type: DataTypes.STRING,
         allowNull: true,
     },
     amountCharged: {
-        type: DataTypes.DECIMAL, // Assuming amount charged is a decimal value, adjust as necessary
-        allowNull: true, // Assuming this can be null, adjust as necessary
+        type: DataTypes.DECIMAL,
+        allowNull: true,
     },
     customerRemarks: {
-        type: DataTypes.TEXT, // Assuming customer remarks will be stored as text, adjust as necessary
-        allowNull: true, // Assuming this can be null, adjust as necessary
+        type: DataTypes.TEXT,
+        allowNull: true,
     },
 });
 

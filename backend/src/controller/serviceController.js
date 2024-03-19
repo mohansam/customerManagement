@@ -19,6 +19,7 @@ const createNewService = async (context) => {
             customerRemarks,
             isServiceCompleted,
             productName,
+            serviceEngineer,
         } = context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
@@ -34,6 +35,7 @@ const createNewService = async (context) => {
             customerRemarks,
             isServiceCompleted,
             productName,
+            serviceEngineer,
         });
         return context.json({ message: 'new service created successfully' }, 201);
     } catch (err) {
@@ -89,6 +91,7 @@ const getPendingServices = async (context) => {
             partsReplaced: pendingService.partsReplaced,
             amountCharged: pendingService.amountCharged,
             customerRemarks: pendingService.customerRemarks,
+            serviceEngineer: pendingService.serviceEngineer,
         }));
         return context.json(serviceData, 200);
     } catch (err) {
@@ -113,6 +116,7 @@ const getUpcomingServices = async (context) => {
             partsReplaced: upComingService.partsReplaced,
             amountCharged: upComingService.amountCharged,
             customerRemarks: upComingService.customerRemarks,
+            serviceEngineer: upComingService.serviceEngineer,
         }));
         return context.json(serviceData, 200);
     } catch (err) {
@@ -137,6 +141,7 @@ const getAllTheServicesBelongsToCustomerId = async (context) => {
             partsReplaced: upComingService.partsReplaced,
             amountCharged: upComingService.amountCharged,
             customerRemarks: upComingService.customerRemarks,
+            serviceEngineer: upComingService.serviceEngineer,
         }));
         return context.json(serviceData, 200);
     } catch (err) {

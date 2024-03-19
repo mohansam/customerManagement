@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  getPendingServices,
-  markServiceAsCompleted,
-} from "../../../services/ServiceService";
-import LoaderModal from "../../Loader/LoaderModal";
-import ErrorMessageModel from "../../ErrorMessageModel/ErrorMessageModel";
-import DetailsModal from "../../DetailsModal/DetailsModal";
-import "./PendingServicesComponent.css";
+import { markServiceAsCompleted } from "../../services/ServiceService";
+import LoaderModal from "../Loader/LoaderModal";
+import ErrorMessageModel from "../ErrorMessageModel/ErrorMessageModel";
+import DetailsModal from "../DetailsModal/DetailsModal";
+import ServiceCard from "./ServiceCard";
 
-const PendingServicesComponent = () => {
-  const [pendingServices, setPendingServices] = useState([]);
+const ServicesComponent = ({ serviceType, serviceFetcher }) => {
+  const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -24,8 +21,8 @@ const PendingServicesComponent = () => {
     setIsLoading(true);
     const fetchPendingServices = async () => {
       try {
-        const services = await getPendingServices();
-        setPendingServices(services);
+        const data = await serviceFetcher();
+        setServices(data);
       } catch (error) {
         console.error("Failed to load pending services:", error);
         setModalMessage(error.message);
@@ -43,7 +40,7 @@ const PendingServicesComponent = () => {
     setIsLoading(true);
     try {
       await markServiceAsCompleted(serviceId);
-      setPendingServices((prev) =>
+      setServices((prev) =>
         prev.filter((service) => service.serviceId !== serviceId)
       );
     } catch (error) {
@@ -61,34 +58,24 @@ const PendingServicesComponent = () => {
 
   return (
     <div className="container">
-      <h2>Pending Services</h2>
-      {pendingServices.length > 0 ? (
+      <h2>{serviceType} Services</h2>
+      {services.length > 0 ? (
         <div className="card-item-list">
-          {pendingServices.map((service) => (
+          {services.map((service) => (
             <div
               className="card-item"
               key={service.serviceId}
               onClick={() => handleServiceSelect(service)}
             >
-              <h3>{service.productName}</h3>
-              <p>ServiceDate: {service.serviceDate}</p>
-              <p>ServiceType: {service.serviceType}</p>
-              <p>IsServiceCompleted: {service.isServiceCompleted.toString()}</p>
-              <p>PartsReplaced: {service.partsReplaced}</p>
-              <p>AmountCharged: {service.amountCharged}</p>
-              <p>CustomerRemarks: {service.customerRemarks}</p>
-              <button
-                onClick={(event) =>
-                  handleMarkAsCompleted(event, service.serviceId)
-                }
-              >
-                Mark as Completed
-              </button>
+              <ServiceCard
+                service={service}
+                handleMarkAsCompleted={handleMarkAsCompleted}
+              />
             </div>
           ))}
         </div>
       ) : (
-        !isModalOpen && <p>No pending services available.</p>
+        !isModalOpen && <p>No {serviceType} services available.</p>
       )}
       <ErrorMessageModel
         isOpen={isModalOpen}
@@ -105,4 +92,4 @@ const PendingServicesComponent = () => {
   );
 };
 
-export default PendingServicesComponent;
+export default ServicesComponent;
