@@ -67,10 +67,14 @@ const ServicesComponent = ({ serviceType, serviceFetcher }) => {
               key={service.serviceId}
               onClick={() => handleServiceSelect(service)}
             >
-              <ServiceCard
-                service={service}
-                handleMarkAsCompleted={handleMarkAsCompleted}
-              />
+              <ServiceCard service={service} />
+              <button
+                onClick={(event) =>
+                  handleMarkAsCompleted(event, service.serviceId)
+                }
+              >
+                Mark as Completed
+              </button>
             </div>
           ))}
         </div>

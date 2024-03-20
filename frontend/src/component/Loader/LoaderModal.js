@@ -6,7 +6,6 @@ const LoaderModal = () => {
   return (
     <div className="loader-modal">
       <div className="loader">Loading...</div>{" "}
-      {/* You can replace this with any loader animation */}
     </div>
   );
 };

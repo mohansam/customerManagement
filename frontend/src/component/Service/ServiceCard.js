@@ -1,6 +1,6 @@
-const ServiceCard = ({ service, handleMarkAsCompleted }) => {
+const ServiceCard = ({ service }) => {
   return (
-    <div className="card-item">
+    <>
       <p>
         ServiceDate:
         {new Date(service.serviceDate).toLocaleDateString()}
@@ -11,12 +11,7 @@ const ServiceCard = ({ service, handleMarkAsCompleted }) => {
       <p>AmountCharged: {service.amountCharged}</p>
       <p>CustomerRemarks: {service.customerRemarks}</p>
       <p>serviceEngineer: {service.serviceEngineer}</p>
-      <button
-        onClick={(event) => handleMarkAsCompleted(event, service.serviceId)}
-      >
-        Mark as Completed
-      </button>
-    </div>
+    </>
   );
 };
 

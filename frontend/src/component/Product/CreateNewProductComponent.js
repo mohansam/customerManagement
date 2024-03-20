@@ -15,6 +15,8 @@ const CreateNewProductComponent = ({ selectedCustomer }) => {
     pump: "",
     membrane: "",
     powerSupply: "",
+    modeOfPurchase: "",
+    reminderDays: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -128,6 +130,33 @@ const CreateNewProductComponent = ({ selectedCustomer }) => {
               required
             />
           </div>
+          <div>
+            <label htmlFor="modeOfPurchase">Mode of Purchase:</label>
+            <select
+              id="modeOfPurchase"
+              name="modeOfPurchase"
+              value={productData.modeOfPurchase}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select...</option>
+              <option value="online">Online</option>
+              <option value="store">Store</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="reminderDays">Reminder Days:</label>
+            <input
+              id="reminderDays"
+              name="reminderDays"
+              type="number"
+              value={productData.reminderDays}
+              onChange={handleInputChange}
+              required
+              min="0" // Ensure that reminder days cannot be negative
+            />
+          </div>
+
           <button
             type="submit"
             className="btn btn-primary"

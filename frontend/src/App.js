@@ -6,7 +6,8 @@ import ProductToServiceWorkflow from "./pages/ProductToServiceWorkflow";
 import CustomerToProductWorkflow from "./pages/CustomerToProductWorkflow";
 import PendingServicesComponent from "./component/Service/PendingServicesComponent";
 import UpcomingServicesComponent from "./component/Service/UpcomingServicesComponent";
-// import CheckCustomerDetails from "./pages/CheckCustomerDetails";
+import CheckCustomerDetails from "./pages/CheckCustomerDetails";
+import PendingRemindersComponent from "./component/Product/PendingRemindersComponent";
 import "./App.css";
 
 const App = () => {
@@ -35,10 +36,14 @@ const App = () => {
             path="/upcoming-services"
             element={<UpcomingServicesComponent />}
           />
-          {/* <Route
+          <Route
             path="/check-customer-details"
             element={<CheckCustomerDetails />}
-          /> */}
+          />
+          <Route
+            path="/get-reminders"
+            element={<PendingRemindersComponent />}
+          />
           <Route path="/" element={<PendingServicesComponent />} />
         </Routes>
       </div>

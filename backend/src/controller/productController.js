@@ -1,14 +1,26 @@
 /* eslint-disable no-console */
+const { Op } = require('sequelize');
 const { Product } = require('../model/productModel');
 const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
 const { customerIdValidationSchema, customerMobileNumSchema } = require('../schema/customerValidationSchema');
 const { productSchema, productIdValidationSchema } = require('../schema/productValidationSchema');
+const { addDaysToDate } = require('../util/util');
 
 const createNewProduct = async (context) => {
     try {
-        const { customerId, productName, dateOfInstallation, warranty, model, pump, membrane, powerSupply } =
-            context.req.validatedData;
+        const {
+            customerId,
+            productName,
+            dateOfInstallation,
+            warranty,
+            model,
+            pump,
+            membrane,
+            powerSupply,
+            reminderDays,
+            modeOfPurchase,
+        } = context.req.validatedData;
         const customer = await Customer.findByPk(customerId);
         if (!customer) return context.json({ message: 'Customer not found' }, 404);
         await Product.create({
@@ -20,6 +32,9 @@ const createNewProduct = async (context) => {
             pump,
             membrane,
             powerSupply,
+            reminderDays,
+            modeOfPurchase,
+            nextScheduledMaintenance: addDaysToDate(dateOfInstallation, reminderDays),
         });
         return context.json({ message: 'new product created successfully' }, 201);
     } catch (err) {
@@ -44,6 +59,9 @@ const getProductById = async (context) => {
                 pump: product.pump,
                 membrane: product.membrane,
                 powerSupply: product.powerSupply,
+                reminderDays: product.reminderDays,
+                modeOfPurchase: product.modeOfPurchase,
+                nextScheduledMaintenance: product.nextScheduledMaintenance,
             },
             200
         );
@@ -69,6 +87,9 @@ const getProductsByCustomerId = async (context) => {
             pump: product.pump,
             membrane: product.membrane,
             powerSupply: product.powerSupply,
+            reminderDays: product.reminderDays,
+            modeOfPurchase: product.modeOfPurchase,
+            nextScheduledMaintenance: product.nextScheduledMaintenance,
         }));
         return context.json(productsData, 200);
     } catch (err) {
@@ -95,6 +116,36 @@ const getProductsByCustomerMobileNum = async (context) => {
             pump: product.pump,
             membrane: product.membrane,
             powerSupply: product.powerSupply,
+            reminderDays: product.reminderDays,
+            modeOfPurchase: product.modeOfPurchase,
+            nextScheduledMaintenance: product.nextScheduledMaintenance,
+        }));
+        return context.json(productsData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
+const getPendingReminders = async (context) => {
+    try {
+        const currentDate = new Date();
+        const products = await Product.findAll({
+            where: { nextScheduledMaintenance: { [Op.lt]: currentDate } },
+        });
+        const productsData = products.map((product) => ({
+            productId: product.productId,
+            productName: product.productName,
+            customerId: product.customerId,
+            dateOfInstallation: product.dateOfInstallation,
+            warranty: product.warranty,
+            model: product.model,
+            pump: product.pump,
+            membrane: product.membrane,
+            powerSupply: product.powerSupply,
+            reminderDays: product.reminderDays,
+            modeOfPurchase: product.modeOfPurchase,
+            nextScheduledMaintenance: product.nextScheduledMaintenance,
         }));
         return context.json(productsData, 200);
     } catch (err) {
@@ -107,5 +158,6 @@ module.exports = {
     createNewProduct: [validateInput(productSchema, 'body'), createNewProduct],
     getProductById: [validateInput(productIdValidationSchema, 'params'), getProductById],
     getProductsByCustomerId: [validateInput(customerIdValidationSchema, 'params'), getProductsByCustomerId],
+    getPendingReminders,
     getProductsByCustomerMobileNum: [validateInput(customerMobileNumSchema, 'query'), getProductsByCustomerMobileNum],
 };

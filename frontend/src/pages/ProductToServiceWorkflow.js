@@ -8,11 +8,13 @@ const ProductToServiceWorkflow = () => {
   const handleSelectProduct = (product) => {
     setSelectedProduct(product);
   };
-
   return (
     <div>
       {!selectedProduct ? (
-        <ProductsListComponent onSelectProduct={handleSelectProduct} />
+        <ProductsListComponent
+          onSelectProduct={handleSelectProduct}
+          displayMessage={"Create New Service"}
+        />
       ) : (
         <CreateNewServiceComponent selectedProduct={selectedProduct} />
       )}

@@ -40,6 +40,18 @@ const Product = sequelize.define('product', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    modeOfPurchase: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    nextScheduledMaintenance: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
+    reminderDays: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
 });
 
 module.exports = { Product };

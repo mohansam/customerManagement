@@ -3,7 +3,7 @@ import { getProductsByCustomerMobileNum } from "../../services/ProductService";
 import LoaderModal from "../Loader/LoaderModal";
 import ProductCard from "./ProductCard";
 
-const ProductsListComponent = ({ onSelectProduct }) => {
+const ProductsListComponent = ({ onSelectProduct, displayMessage }) => {
   const [mobileNum, setMobileNum] = useState("");
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +43,7 @@ const ProductsListComponent = ({ onSelectProduct }) => {
 
   return (
     <div className="container">
-      <h2>Create New Service</h2>
+      <h2>{displayMessage}</h2>
       <input
         type="text"
         placeholder="Enter customer's mobile number"
@@ -61,7 +61,11 @@ const ProductsListComponent = ({ onSelectProduct }) => {
       {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
       <div className="card-item-list">
         {products.map((product) => (
-          <div key={product.productId} onClick={() => onSelectProduct(product)}>
+          <div
+            className="card-item"
+            key={product.productId}
+            onClick={() => onSelectProduct(product)}
+          >
             <ProductCard product={product} />
           </div>
         ))}

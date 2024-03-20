@@ -45,6 +45,17 @@ const productSchema = Joi.object({
         'string.max': 'powerSupply must not exceed 1000 characters',
         'any.required': 'powerSupply value is required',
     }),
+    reminderDays: Joi.number().required().integer().min(0).positive().messages({
+        'number.base': `"value" must be a number`,
+        'number.integer': `"value" must be an integer`,
+        'number.min': `"value" must be at least {#limit}`,
+        'number.max': `"value" must be less than or equal to {#limit}`,
+    }),
+    modeOfPurchase: Joi.string().valid('online', 'store').required().messages({
+        'string.base': 'Invalid modeOfPurchase, must be a string',
+        'any.only': 'Mode of purchase must be either "online" or "store"',
+        'any.required': 'Mode of purchase is required',
+    }),
 });
 
 const productIdValidationSchema = Joi.object({

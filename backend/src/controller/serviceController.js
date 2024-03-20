@@ -6,6 +6,7 @@ const { Customer } = require('../model/customerModel');
 const { validateInput } = require('../middleware/validateInput');
 const { serviceSchema, serviceIdValidationSchema } = require('../schema/serviceValidationSchema');
 const { customerIdValidationSchema } = require('../schema/customerValidationSchema');
+const { productIdValidationSchema } = require('../schema/productValidationSchema');
 
 const createNewService = async (context) => {
     try {
@@ -77,7 +78,6 @@ const getServiceByServiceId = async (context) => {
 const getPendingServices = async (context) => {
     try {
         const currentDate = new Date();
-        // Find all services where serviceDate is less than the current date and isServiceCompleted is false
         const pendingServices = await Service.findAll({
             where: { serviceDate: { [Op.lt]: currentDate }, isServiceCompleted: false },
         });
@@ -150,6 +150,31 @@ const getAllTheServicesBelongsToCustomerId = async (context) => {
     }
 };
 
+const getAllTheServicesBelongsToProductId = async (context) => {
+    try {
+        const { productId } = context.req.validatedData;
+        const services = await Service.findAll({
+            where: { productId },
+        });
+        const serviceData = services.map((upComingService) => ({
+            serviceId: upComingService.serviceId,
+            customerId: upComingService.customerId,
+            productId: upComingService.productId,
+            serviceDate: upComingService.serviceDate,
+            serviceType: upComingService.serviceType,
+            isServiceCompleted: upComingService.isServiceCompleted,
+            partsReplaced: upComingService.partsReplaced,
+            amountCharged: upComingService.amountCharged,
+            customerRemarks: upComingService.customerRemarks,
+            serviceEngineer: upComingService.serviceEngineer,
+        }));
+        return context.json(serviceData, 200);
+    } catch (err) {
+        console.error(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 const markServiceAsCompletedByServiceId = async (context) => {
     try {
         const { serviceId } = context.req.validatedData;
@@ -179,5 +204,9 @@ module.exports = {
     getAllTheServicesBelongsToCustomerId: [
         validateInput(customerIdValidationSchema, 'params'),
         getAllTheServicesBelongsToCustomerId,
+    ],
+    getAllTheServicesBelongsToProductId: [
+        validateInput(productIdValidationSchema, 'params'),
+        getAllTheServicesBelongsToProductId,
     ],
 };

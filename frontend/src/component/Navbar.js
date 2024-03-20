@@ -77,7 +77,7 @@ const Navbar = () => {
               Upcoming Services
             </NavLink>
           </li>
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <NavLink
               className="nav-link"
               to="/check-customer-details"
@@ -86,7 +86,17 @@ const Navbar = () => {
             >
               Check Customer Details
             </NavLink>
-          </li> */}
+          </li>
+          <li className="nav-item">
+            <NavLink
+              className="nav-link"
+              to="/get-reminders"
+              onClick={closeNav}
+              activeClassName="active"
+            >
+              Get Reminders
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>

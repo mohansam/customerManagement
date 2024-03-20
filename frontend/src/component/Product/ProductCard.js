@@ -1,6 +1,6 @@
 const ProductCard = ({ product }) => {
   return (
-    <div className="card-item">
+    <>
       <h3>{product.productName}</h3>
       <p>Model: {product.model}</p>
       <p>Membrane: {product.membrane}</p>
@@ -10,8 +10,13 @@ const ProductCard = ({ product }) => {
         Date of Installation:{" "}
         {new Date(product.dateOfInstallation).toLocaleDateString()}
       </p>
-      <p>Warranty: {product.warranty}</p>
-    </div>
+      <p>
+        Next Scheduled Maintenance:
+        {new Date(product.nextScheduledMaintenance).toLocaleDateString()}
+      </p>
+      <p>Mode Of Purchase: {product.modeOfPurchase}</p>
+      <p>ReminderDays: {product.reminderDays}</p>
+    </>
   );
 };
 

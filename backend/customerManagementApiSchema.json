@@ -1036,7 +1036,9 @@
                                     "model",
                                     "pump",
                                     "membrane",
-                                    "powerSupply"
+                                    "powerSupply",
+                                    "modeOfPurchase",
+                                    "reminderDays"
                                 ],
                                 "properties": {
                                     "customerId": {
@@ -1072,6 +1074,21 @@
                                     "powerSupply": {
                                         "type": "string",
                                         "maxLength": 100
+                                    },
+                                    "modeOfPurchase": {
+                                        "type": "string",
+                                        "enum": ["online", "store"],
+                                        "description": "The mode of purchase for the product, can be either 'online' or 'store'."
+                                    },
+                                    "reminderDays": {
+                                        "type": "integer",
+                                        "description": "Number of days before scheduled maintenance to send a reminder.",
+                                        "minimum": 0
+                                    },
+                                    "nextScheduledMaintenance": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "The date of the next scheduled maintenance. This should be calculated as 'dateOfInstallation' plus 'reminderDays'. Must be in ISO 8601 format. This field is calculated server-side based on 'dateOfInstallation' and 'reminderDays'."
                                     }
                                 }
                             }
@@ -1193,6 +1210,16 @@
                                         "powerSupply": {
                                             "type": "string",
                                             "maxLength": 100
+                                        },
+                                        "modeOfPurchase": {
+                                            "type": "string",
+                                            "enum": ["online", "store"],
+                                            "description": "The mode of purchase for the product, can be either 'online' or 'store'."
+                                        },
+                                        "reminderDays": {
+                                            "type": "integer",
+                                            "description": "Number of days before scheduled maintenance to send a reminder.",
+                                            "minimum": 0
                                         }
                                     }
                                 }
@@ -1299,6 +1326,21 @@
                                             "powerSupply": {
                                                 "type": "string",
                                                 "maxLength": 100
+                                            },
+                                            "modeOfPurchase": {
+                                                "type": "string",
+                                                "enum": ["online", "store"],
+                                                "description": "The mode of purchase for the product, can be either 'online' or 'store'."
+                                            },
+                                            "reminderDays": {
+                                                "type": "integer",
+                                                "description": "Number of days before scheduled maintenance to send a reminder.",
+                                                "minimum": 0
+                                            },
+                                            "nextScheduledMaintenance": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "The date of the next scheduled maintenance. This should be calculated as 'dateOfInstallation' plus 'reminderDays'. Must be in ISO 8601 format. This field is calculated server-side based on 'dateOfInstallation' and 'reminderDays'."
                                             }
                                         }
                                     },
@@ -1391,6 +1433,21 @@
                                             "powerSupply": {
                                                 "type": "string",
                                                 "maxLength": 100
+                                            },
+                                            "modeOfPurchase": {
+                                                "type": "string",
+                                                "enum": ["online", "store"],
+                                                "description": "The mode of purchase for the product, can be either 'online' or 'store'."
+                                            },
+                                            "reminderDays": {
+                                                "type": "integer",
+                                                "description": "Number of days before scheduled maintenance to send a reminder.",
+                                                "minimum": 0
+                                            },
+                                            "nextScheduledMaintenance": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "description": "The date of the next scheduled maintenance. This should be calculated as 'dateOfInstallation' plus 'reminderDays'. Must be in ISO 8601 format. This field is calculated server-side based on 'dateOfInstallation' and 'reminderDays'."
                                             }
                                         }
                                     },

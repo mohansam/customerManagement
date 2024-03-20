@@ -74,3 +74,19 @@ export const markServiceAsCompleted = async (serviceId) => {
     throw error;
   }
 };
+
+export const getServicesByProductId = async (productId) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/product/getAllTheServicesBelongsToProductId/${productId}`
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "An unknown error occurred");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching customer by mobile number:", error);
+    throw error;
+  }
+};
