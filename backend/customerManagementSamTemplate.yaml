@@ -1,7 +1,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Resources:
+    CustomerManagementLambdaLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+            LayerName: customer-management-backend-api-util-layer
+            Description: customerManagement-backend-api
+            ContentUri: lambdaLayer/nodejs.zip
+            CompatibleRuntimes:
+                - nodejs18.x
+
     CustomerManagement:
+        DependsOn: CustomerManagementLambdaLayer
         Type: 'AWS::Serverless::Function'
         Properties:
             Handler: index.handler
@@ -12,7 +22,7 @@ Resources:
             MemorySize: 256
             Timeout: 30
             Layers:
-                - arn:aws:lambda:ap-south-1:823381142243:layer:customerManagement-backend-api-util-layer:1
+                - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:customer-management-backend-api-util-layer:1
             Environment:
                 Variables:
                     FRONT_END_ORIGIN_URI: ''
@@ -25,13 +35,3 @@ Resources:
         Properties:
             LogGroupName: '/aws/lambda/customerManagement-backend-api'
             RetentionInDays: 365
-
-    CustomerManagementLambdaLayer:
-        Type: AWS::Serverless::LayerVersion
-        Properties:
-            LayerName: customerManagement-backend-api-util-layer
-            Description: customerManagement-backend-api
-            ContentUri: lambdaLayer/nodejs.zip
-            CompatibleRuntimes:
-                - nodejs18.x
-            RetentionPolicy: Retain
