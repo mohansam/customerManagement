@@ -154,10 +154,29 @@ const getPendingReminders = async (context) => {
     }
 };
 
+const markReminderAsCompletedByProductId = async (context) => {
+    try {
+        const { productId } = context.req.validatedData;
+        const product = await Product.findByPk(productId);
+        if (!product) return context.json({ message: 'Product not found' }, 404);
+        const nextScheduledMaintenance = addDaysToDate(product.nextScheduledMaintenance, product.reminderDays);
+        const [updatedService] = await Product.update({ nextScheduledMaintenance }, { where: { productId } });
+        if (updatedService === 0) return context.json({ message: 'Product not found' }, 404);
+        return context.json({ message: 'Service update successfully' }, 200);
+    } catch (err) {
+        console.log(err);
+        return context.json({ message: 'Internal server error' }, 500);
+    }
+};
+
 module.exports = {
     createNewProduct: [validateInput(productSchema, 'body'), createNewProduct],
     getProductById: [validateInput(productIdValidationSchema, 'params'), getProductById],
     getProductsByCustomerId: [validateInput(customerIdValidationSchema, 'params'), getProductsByCustomerId],
     getPendingReminders,
+    markReminderAsCompletedByProductId: [
+        validateInput(productIdValidationSchema, 'params'),
+        markReminderAsCompletedByProductId,
+    ],
     getProductsByCustomerMobileNum: [validateInput(customerMobileNumSchema, 'query'), getProductsByCustomerMobileNum],
 };

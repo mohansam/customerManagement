@@ -5,7 +5,13 @@ const addDaysToDate = (isoDateString, daysToAdd) => {
         throw new Error('Invalid date format');
     }
 
-    date.setDate(date.getDate() + daysToAdd);
+    const numberOfDays = parseInt(daysToAdd, 10);
+
+    if (Number.isNaN(numberOfDays)) {
+        throw new Error('Invalid number to add');
+    }
+
+    date.setDate(date.getDate() + numberOfDays);
 
     return date.toISOString();
 };
