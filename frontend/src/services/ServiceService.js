@@ -78,7 +78,7 @@ export const markServiceAsCompleted = async (serviceId) => {
 export const getServicesByProductId = async (productId) => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/product/getAllTheServicesBelongsToProductId/${productId}`
+      `${process.env.REACT_APP_API_BASE_URL}/service/getAllTheServicesBelongsToProductId/${productId}`
     );
     if (!response.ok) {
       const errorData = await response.json();

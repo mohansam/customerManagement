@@ -40,13 +40,19 @@ const ServiceDetailsModal = ({ selectedProduct, onClose }) => {
   return (
     <div className="details-modal-backdrop">
       <div className="details-modal-content">
-        <div className="card-item-list">
-          {serviceDetails.map((service) => (
-            <div className="card-item" key={service.serviceId}>
-              <ServiceCard service={service} />
-            </div>
-          ))}
-        </div>
+        {serviceDetails.length > 0 ? (
+          <div className="card-item-list">
+            {serviceDetails.map((service) => (
+              <div className="card-item" key={service.serviceId}>
+                <ServiceCard service={service} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="card-item">
+            <p>No services available for this product.</p>
+          </div>
+        )}
         <button onClick={onClose}>Close</button>
       </div>
     </div>

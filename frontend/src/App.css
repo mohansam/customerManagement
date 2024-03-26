@@ -64,6 +64,10 @@ body.dark-mode .navbar-nav .nav-link {
   padding: 15px;
   cursor: pointer;
   transition: transform 0.2s;
+  display: flex; /* Set .card-item as a flex container */
+  flex-direction: column; /* Stack children vertically */
+  align-items: flex-start; /* Center children horizontally within the container */
+  justify-content: center; /* Optional: Adjust this to space children as desired */
 }
 
 .card-item:hover {
@@ -73,6 +77,7 @@ body.dark-mode .navbar-nav .nav-link {
 .card-item h3,
 .card-item p {
   margin: 5px 0;
+  text-align: center; /* Center-align the text of h3 and p elements */
 }
 
 .card-item button {
@@ -82,6 +87,7 @@ body.dark-mode .navbar-nav .nav-link {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+  align-self: center;
 }
 
 .card-item button:hover {

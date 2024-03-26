@@ -1,4 +1,3 @@
-/* DetailsModal.css */
 .details-modal-backdrop {
   position: fixed;
   top: 0;
@@ -8,17 +7,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #b8acac90; /* Fully opaque */
+  color: #ffffff;
+  background-color: #b8acac90; /* Semi-transparent background */
+  overflow: hidden; /* Prevents background scrolling */
+  padding: 20px; /* Adds space around the modal content, especially on smaller screens */
 }
 
 .details-modal-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: normal;
+  justify-content: flex-start; /* Changed to flex-start to align items to the top */
+  align-items: center; /* Changed to center to align the content horizontally */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(161, 115, 115, 0.1);
   gap: 5px;
+  max-height: 90vh; /* Sets a maximum height to 90% of the viewport height */
+  width: auto; /* Adjust width as necessary */
+  overflow-y: auto; /* Allows vertical scrolling within the modal */
+  padding: 20px; /* Adds padding inside the modal for top and bottom spacing */
 }
 
 .details-modal-content button {

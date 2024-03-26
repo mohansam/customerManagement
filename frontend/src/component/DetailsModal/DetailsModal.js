@@ -44,17 +44,19 @@ const DetailsModal = ({ serviceObject, onClose }) => {
   return (
     <div className="details-modal-backdrop">
       <div className="details-modal-content">
-        {userDetails && (
-          <>
-            <CustomerCard customer={userDetails} />
-          </>
-        )}
-        {productDetails && (
-          <>
-            <ProductCard product={productDetails} />
-          </>
-        )}
-        <button onClick={onClose}>Close</button>
+        <div className="card-item">
+          {userDetails && (
+            <>
+              <CustomerCard customer={userDetails} />
+            </>
+          )}
+          {productDetails && (
+            <>
+              <ProductCard product={productDetails} />
+            </>
+          )}
+          <button onClick={onClose}>Close</button>
+        </div>
       </div>
     </div>
   );

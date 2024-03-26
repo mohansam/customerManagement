@@ -57,7 +57,10 @@ const ProductToServiceWorkflow = () => {
           </button>
           {customer && (
             <div className="card-item-list">
-              <div onClick={() => setSelectedCustomer(customer)}>
+              <div
+                className="card-item"
+                onClick={() => setSelectedCustomer(customer)}
+              >
                 <CustomerCard customer={customer} />
               </div>
             </div>
